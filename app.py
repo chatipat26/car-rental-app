@@ -16,6 +16,44 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# ====================================================
+# ระบบเข้าสู่ระบบ (Authentication System)
+# ====================================================
+USERS = {
+    "admin": "1234",
+    "user1": "1234"
+}
+
+if "logged_in" not in st.session_state:
+    st.session_state["logged_in"] = False
+if "username" not in st.session_state:
+    st.session_state["username"] = ""
+
+def login_page():
+    st.title("🔐 เข้าสู่ระบบ Car Rental ERP")
+    st.caption("กรุณากรอกชื่อผู้ใช้และรหัสผ่านเพื่อเข้าใช้งาน")
+    
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        with st.form("login_form"):
+            username = st.text_input("👤 ชื่อผู้ใช้งาน (Username)")
+            password = st.text_input("🔑 รหัสผ่าน (Password)", type="password")
+            submitted = st.form_submit_button("เข้าสู่ระบบ", use_container_width=True)
+            
+            if submitted:
+                if username in USERS and USERS[username] == password:
+                    st.session_state["logged_in"] = True
+                    st.session_state["username"] = username
+                    st.success("✅ เข้าสู่ระบบสำเร็จ!")
+                    st.rerun()
+                else:
+                    st.error("❌ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง")
+
+# ตรวจสอบว่าถ้ายังไม่ได้ล็อกอิน ให้แสดงหน้า Login แล้วหยุดรันส่วนอื่น
+if not st.session_state["logged_in"]:
+    login_page()
+    st.stop()
+
 DOCS_DIR = os.path.abspath("documents")
 os.makedirs(DOCS_DIR, exist_ok=True)
 
@@ -234,6 +272,14 @@ def format_date_th(date_str):
 # ====================================================
 st.sidebar.title("🚗 CAR RENTAL ERP")
 st.sidebar.caption("ระบบบริหารจัดการรถเช่าส่วนกลาง")
+
+# แสดงชื่อผู้ใช้งานและปุ่ม Logout ที่ Sidebar
+st.sidebar.markdown(f"👤 ผู้ใช้งาน: **{st.session_state['username']}**")
+if st.sidebar.button("🚪 ออกจากระบบ (Logout)"):
+    st.session_state["logged_in"] = False
+    st.session_state["username"] = ""
+    st.rerun()
+st.sidebar.markdown("---")
 
 module_choice = st.sidebar.radio(
     "📌 เลือกโมดูลการทำงาน",

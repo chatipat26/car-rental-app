@@ -44,7 +44,23 @@ st.markdown("""
         background-color: #f1f5f9 !important;
     }
 
-    /* 2. แถบ Sidebar สไตล์ Prody Modern UI (โทนกรมเข้มตัดทอง) */
+    /* 2. ปุ่มดึง Sidebar ออกมา / ปุ่มพับ Sidebar ให้เป็นสีดำเข้ม */
+    [data-testid="collapsedControl"],
+    [data-testid="collapsedControl"] button,
+    [data-testid="stSidebarCollapseButton"] button {
+        color: #0f172a !important;
+        background-color: #ffffff !important;
+        border-radius: 8px !important;
+    }
+
+    [data-testid="collapsedControl"] svg,
+    [data-testid="stSidebarCollapseButton"] svg {
+        color: #0f172a !important;
+        fill: #0f172a !important;
+        stroke: #0f172a !important;
+    }
+
+    /* 3. แถบ Sidebar สไตล์ Prody Modern UI (โทนกรมเข้มตัดทอง) */
     [data-testid="stSidebar"] {
         background-color: #0f172a !important;
         border-right: 1.5px solid #d4af37 !important;
@@ -105,7 +121,7 @@ st.markdown("""
         color: #fef08a !important;
     }
 
-    /* 3. แถบหัวข้อโมดูล (Module Header Banner) */
+    /* 4. แถบหัวข้อโมดูล (Module Header Banner) */
     h1 {
         background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
         color: #ffffff !important;

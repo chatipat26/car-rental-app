@@ -16,7 +16,7 @@ st.set_page_config(
 )
 
 # ----------------------------------------------------
-# Custom CSS: โทนสีขาวคลีน + การ์ด Login สีกรมอ่อนนุ่มนวล
+# Custom CSS: โทนสี Executive Navy & Gold Accent (ดีไซน์หรูหรา)
 # ----------------------------------------------------
 st.markdown("""
     <style>
@@ -26,34 +26,47 @@ st.markdown("""
         font-family: 'Kanit', sans-serif !important;
     }
 
-    /* พื้นหลังหลักของหน้าเว็บเป็นสีขาว Off-White สบายตา */
+    /* 1. เส้นสีทองคาดขอบบนสุดของหน้าจอ */
+    [data-testid="stAppViewContainer"]::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #b8860b 0%, #fef08a 50%, #d4af37 100%);
+        z-index: 999999;
+    }
+
+    /* พื้นหลังหลักของหน้าเว็บเป็นสีขาว Off-White */
     .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"], [data-testid="stMain"], .main {
         background-color: #f8fafc !important;
     }
 
-    /* แถบ Sidebar สีน้ำเงินกรมเข้ม สไตล์ Executive */
+    /* แถบ Sidebar สีน้ำเงินกรมเข้ม ขอบขวาสีทอง */
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%) !important;
-        border-right: 2px solid #3b82f6 !important;
+        border-right: 2px solid #d4af37 !important;
     }
 
     [data-testid="stSidebar"] * {
         color: #f8fafc !important;
     }
 
-    /* หัวข้อและข้อความหลัก สีน้ำเงินกรม คมชัด */
+    /* หัวข้อและข้อความหลัก */
     h1, h2, h3, h4, h5, h6 {
         color: #0f172a !important;
         font-weight: 600 !important;
     }
 
-    /* การ์ด Metric แบบสว่าง เรียบหรู */
+    /* การ์ด Metric สว่างเรียบหรู พร้อมขอบบนสีทอง */
     [data-testid="stMetric"] {
         background-color: #ffffff !important;
-        border: 1.5px solid #3b82f6 !important;
+        border: 1px solid #e2e8f0 !important;
+        border-top: 3px solid #d4af37 !important;
         border-radius: 12px !important;
         padding: 1.2rem !important;
-        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.08) !important;
+        box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05) !important;
     }
 
     [data-testid="stMetricValue"] {
@@ -65,25 +78,26 @@ st.markdown("""
         color: #475569 !important;
     }
 
-    /* การ์ดฟอร์ม/Login ปรับสีน้ำเงินกรมให้อ่อนลงเล็กน้อย (Slate Navy) ดูนุ่มนวลขึ้น */
+    /* การ์ดฟอร์ม/Login สีน้ำเงินกรม ตัดขอบบนสีทองพรีเมียม */
     [data-testid="stForm"] {
         background: linear-gradient(180deg, #1e293b 0%, #334155 100%) !important;
-        border: 2px solid #3b82f6 !important; /* ขอบสีฟ้าพรีเมียม */
+        border: 1px solid #475569 !important;
+        border-top: 4px solid #d4af37 !important; /* เส้นสีทองคาดบนการ์ด */
         border-radius: 16px !important;
         padding: 2.2rem !important;
-        box-shadow: 0 10px 25px rgba(30, 41, 59, 0.25) !important;
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.2) !important;
     }
 
-    /* หัวข้อ Label บนการ์ด Login เป็นสีขาวสว่าง */
+    /* หัวข้อ Label บนการ์ดเป็นสีขาวสว่าง */
     .stTextInput label, .stSelectbox label, .stNumberInput label, .stDateInput label, .stTextArea label {
         color: #ffffff !important;
         font-weight: 500 !important;
     }
 
-    /* ช่องกรอกข้อมูล (Inputs) และ Selectbox พื้นสีขาว ตัวหนังสือสีดำคมชัด */
+    /* ช่อง Input & Selectbox พื้นสีขาว ตัวหนังสือสีดำคมชัด */
     .stSelectbox div[data-baseweb="select"] {
         background-color: #ffffff !important;
-        border: 1.5px solid #60a5fa !important;
+        border: 1.5px solid #d4af37 !important;
         border-radius: 8px !important;
     }
 
@@ -95,41 +109,42 @@ st.markdown("""
     .stTextInput input, .stNumberInput input, .stDateInput input, .stTextArea textarea {
         background-color: #ffffff !important;
         color: #0f172a !important;
-        border: 1.5px solid #60a5fa !important;
+        border: 1.5px solid #cbd5e1 !important;
         border-radius: 8px !important;
         font-weight: 500 !important;
     }
 
     .stTextInput input:focus, .stSelectbox select:focus, .stNumberInput input:focus {
-        border-color: #2563eb !important;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25) !important;
+        border-color: #d4af37 !important;
+        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25) !important;
     }
 
     /* เมนูดรอปดาวน์ Popup ตอนคลิกเลือก */
     div[data-baseweb="menu"] {
         background-color: #ffffff !important;
-        border: 1.5px solid #3b82f6 !important;
+        border: 1.5px solid #d4af37 !important;
     }
 
     div[data-baseweb="menu"] * {
         color: #0f172a !important;
     }
 
-    /* ปุ่มกดสีฟ้าพรีเมียม */
+    /* ปุ่มกดสีน้ำเงินกรมตัดขอบและเงาสีทอง */
     div.stButton > button {
-        background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%) !important;
+        background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%) !important;
         color: #ffffff !important;
-        border: 1px solid #60a5fa !important;
+        border: 1px solid #d4af37 !important;
         border-radius: 8px !important;
         padding: 0.6rem 1.4rem !important;
         font-weight: 600 !important;
         transition: all 0.3s ease !important;
-        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2) !important;
     }
 
     div.stButton > button:hover {
-        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%) !important;
-        box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45) !important;
+        background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%) !important;
+        border-color: #fef08a !important;
+        box-shadow: 0 6px 18px rgba(212, 175, 55, 0.35) !important;
         transform: translateY(-1px) !important;
     }
 
@@ -150,9 +165,9 @@ st.markdown("""
     }
 
     .stTabs [aria-selected="true"] {
-        background-color: #1e3a8a !important;
+        background-color: #0f172a !important;
         color: #ffffff !important;
-        border: 1px solid #2563eb !important;
+        border: 1px solid #d4af37 !important;
     }
 
     /* Dataframe ตารางข้อมูล */
@@ -207,7 +222,7 @@ def login_page():
     with col2:
         st.markdown("""
             <div style="text-align: center; margin-bottom: 25px;">
-                <div style="background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%); width: 75px; height: 75px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35); border: 2.5px solid #60a5fa;">
+                <div style="background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); width: 75px; height: 75px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; box-shadow: 0 8px 20px rgba(212, 175, 55, 0.35); border: 2.5px solid #d4af37;">
                     <span style="font-size: 38px;">🚗</span>
                 </div>
                 <h1 style="color: #0f172a !important; font-size: 34px; margin-bottom: 5px; font-weight: 700; letter-spacing: 1px;">CAR RENTAL ERP</h1>
@@ -216,7 +231,7 @@ def login_page():
         """, unsafe_allow_html=True)
         
         with st.form("login_form"):
-            st.markdown("<h3 style='text-align: center; color: #38bdf8 !important; margin-bottom: 20px; font-weight: 600;'>🔐 เข้าสู่ระบบ</h3>", unsafe_allow_html=True)
+            st.markdown("<h3 style='text-align: center; color: #fef08a !important; margin-bottom: 20px; font-weight: 600;'>🔐 เข้าสู่ระบบ</h3>", unsafe_allow_html=True)
             username = st.text_input("👤 ชื่อผู้ใช้งาน (Username)")
             password = st.text_input("🔑 รหัสผ่าน (Password)", type="password")
             st.markdown("<br/>", unsafe_allow_html=True)
@@ -244,7 +259,7 @@ os.makedirs(DOCS_DIR, exist_ok=True)
 st.sidebar.markdown("""
     <div style="text-align: center; padding: 10px 0;">
         <h2 style="color: #ffffff !important; margin: 0;">🚗 CAR RENTAL</h2>
-        <p style="color: #94a3b8 !important; font-size: 13px; margin: 0;">Enterprise ERP Solution</p>
+        <p style="color: #d4af37 !important; font-size: 13px; margin: 0; font-weight: 500;">Enterprise ERP Solution</p>
     </div>
 """, unsafe_allow_html=True)
 
@@ -683,7 +698,7 @@ elif module_choice == "🔧 6. ค่าใช้จ่าย & ซ่อมบ�
             with st.form("exp_form", clear_on_submit=True):
                 e1, e2 = st.columns(2)
                 exp_type = e1.selectbox("ประเภทค่าใช้จ่าย", ["ค่าซ่อมบำรุง/ถ่ายน้ำมันเครื่อง", "ค่าน้ำมันเชื้อเพลิง", "ค่าประกันภัย/พ.ร.บ.", "ค่าล้างรถ/ทำความสะอาด", "อื่นๆ"])
-                title = e2.text_input("รายการ / รายรายละเอียด * (เช่น เช็กระยะ 50,000 กม.)")
+                title = e2.text_input("รายการ / รายละเอียด * (เช่น เช็กระยะ 50,000 กม.)")
 
                 e3, e4 = st.columns(2)
                 amount = e3.number_input("จำนวนเงิน (บาท) *", value=1500.0, step=100.0)
@@ -860,9 +875,9 @@ elif module_choice == "📁 9. ศูนย์เอกสาร & PDF":
         st.markdown("### 📄 สัญญาเช่ารถยนต์ (Rental Agreement)")
         
         doc_html = f"""
-        <div style="border:2.5px solid #2563eb; padding:25px; background-color:#ffffff; color:#0f172a; font-family:'Kanit', sans-serif; border-radius:12px; box-shadow:0 4px 15px rgba(37,99,235,0.1);">
-            <div style="text-align:center; border-bottom:2px solid #2563eb; padding-bottom:10px; margin-bottom:15px;">
-                <h2 style="color:#1e3a8a; margin:0; font-weight:700;">เอกสารสัญญาเช่ารถยนต์</h2>
+        <div style="border:2.5px solid #d4af37; padding:25px; background-color:#ffffff; color:#0f172a; font-family:'Kanit', sans-serif; border-radius:12px; box-shadow:0 4px 15px rgba(212,175,55,0.15);">
+            <div style="text-align:center; border-bottom:2px solid #d4af37; padding-bottom:10px; margin-bottom:15px;">
+                <h2 style="color:#0f172a; margin:0; font-weight:700;">เอกสารสัญญาเช่ารถยนต์</h2>
                 <p style="color:#64748b; margin:5px 0 0 0;">เลขที่สัญญา: <b style="color:#0f172a;">{doc['contract_no']}</b> | วันที่ทำสัญญา: {doc['created_at'][:10] if doc.get('created_at') else '-'}</p>
             </div>
             <p><b>ผู้เช่า:</b> คุณ{doc['customers']['name']} | <b>เบอร์โทรศัพท์:</b> {doc['customers']['phone']}</p>

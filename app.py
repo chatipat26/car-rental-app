@@ -55,7 +55,19 @@ st.markdown("""
         color: #ffffff !important;
     }
 
-    /* ตกแต่ง Radio Buttons ใน Sidebar (บังคับตัวหนังสือสีขาวชัดเจน) */
+    /* ตกแต่งช่อง Search บน Sidebar สไตล์ Prody UI */
+    [data-testid="stSidebar"] div[data-baseweb="input"] {
+        background-color: #1e293b !important;
+        border: 1px solid #d4af37 !important;
+        border-radius: 10px !important;
+    }
+
+    [data-testid="stSidebar"] div[data-baseweb="input"] input {
+        color: #ffffff !important;
+        font-size: 14px !important;
+    }
+
+    /* ตกแต่ง Radio Buttons ใน Sidebar */
     [data-testid="stSidebar"] div[role="radiogroup"] > label {
         background-color: transparent !important;
         border-radius: 10px !important;
@@ -66,20 +78,17 @@ st.markdown("""
         border: 1px solid transparent !important;
     }
 
-    /* บังคับ Span/Div ภายใน Label ใน Sidebar ให้เป็นสีขาวสดใส */
     [data-testid="stSidebar"] div[role="radiogroup"] > label p,
     [data-testid="stSidebar"] div[role="radiogroup"] > label span {
         color: #ffffff !important;
         font-size: 15px !important;
     }
 
-    /* เมื่อ Hover เมนู Sidebar */
     [data-testid="stSidebar"] div[role="radiogroup"] > label:hover {
         background-color: #1e293b !important;
         border-color: #475569 !important;
     }
 
-    /* เมื่อ Active เลือกเมนู Sidebar (เน้นสีทองเหลืองสว่าง) */
     [data-testid="stSidebar"] div[role="radiogroup"] > label[data-checked="true"],
     [data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) {
         background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
@@ -92,7 +101,7 @@ st.markdown("""
     [data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) p,
     [data-testid="stSidebar"] div[role="radiogroup"] > label[data-checked="true"] span,
     [data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) span {
-        color: #fef08a !important; /* สีทองสว่างเมื่อเลือก */
+        color: #fef08a !important;
     }
 
     /* 3. แถบหัวข้อโมดูล (Module Header Banner) */
@@ -108,13 +117,11 @@ st.markdown("""
         font-size: 1.75rem !important;
     }
 
-    /* หัวข้อ h2, h3, h4 */
     h2, h3, h4, h5, h6 {
         color: #0f172a !important;
         font-weight: 600 !important;
     }
 
-    /* การ์ด Metric แบบ Modern White Floating Cards */
     [data-testid="stMetric"] {
         background-color: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
@@ -133,7 +140,6 @@ st.markdown("""
         color: #64748b !important;
     }
 
-    /* การ์ดฟอร์ม/Login สีน้ำเงินกรม ตัดขอบสีทอง */
     [data-testid="stForm"] {
         background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%) !important;
         border: 1px solid #334155 !important;
@@ -148,7 +154,6 @@ st.markdown("""
         font-weight: 500 !important;
     }
 
-    /* ช่อง Input & Selectbox */
     .stSelectbox div[data-baseweb="select"] {
         background-color: #ffffff !important;
         border: 1.5px solid #d4af37 !important;
@@ -168,12 +173,6 @@ st.markdown("""
         font-weight: 500 !important;
     }
 
-    .stTextInput input:focus, .stSelectbox select:focus, .stNumberInput input:focus {
-        border-color: #d4af37 !important;
-        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25) !important;
-    }
-
-    /* ปุ่มกดหลัก */
     div.stButton > button {
         background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%) !important;
         color: #ffffff !important;
@@ -192,7 +191,6 @@ st.markdown("""
         transform: translateY(-1px) !important;
     }
 
-    /* Dataframe ตารางข้อมูล */
     [data-testid="stDataFrame"] {
         background-color: #ffffff !important;
         border-radius: 14px !important;
@@ -276,10 +274,10 @@ DOCS_DIR = os.path.abspath("documents")
 os.makedirs(DOCS_DIR, exist_ok=True)
 
 # ====================================================
-# 2. เมนูหลักประจำแอปพลิเคชัน (Sidebar Navigation)
+# 2. เมนูหลักประจำแอปพลิเคชัน (Sidebar Navigation + Global Search)
 # ====================================================
 st.sidebar.markdown("""
-    <div style="padding: 10px 5px 15px 5px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #334155;">
+    <div style="padding: 10px 5px 10px 5px; display: flex; align-items: center; gap: 12px;">
         <div style="background: linear-gradient(135deg, #1e3a8a, #0f172a); width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 1.5px solid #d4af37;">
             <span style="font-size: 22px;">🚗</span>
         </div>
@@ -288,8 +286,11 @@ st.sidebar.markdown("""
             <p style="color: #d4af37 !important; font-size: 12px; margin: 0; font-weight: 500;">Enterprise ERP</p>
         </div>
     </div>
-    <br/>
 """, unsafe_allow_html=True)
+
+# 🔍 ช่องค้นหาด่วน (Global Search Bar) บน Sidebar สไตล์ Prody UI
+global_search = st.sidebar.text_input("Search", placeholder="🔍 ค้นหาด่วนทั่วทั้งระบบ...", label_visibility="collapsed")
+st.sidebar.markdown("<div style='margin-bottom: 12px;'></div>", unsafe_allow_html=True)
 
 module_choice = st.sidebar.radio(
     "NAVIGATION",
@@ -324,19 +325,18 @@ if module_choice == "🚙 1. จัดการข้อมูลรถ":
     tab1, tab2, tab3 = st.tabs(["📋 รายการรถทั้งหมด", "➕ เพิ่มรถยนต์ใหม่", "✏️ แก้ไข/ระงับใช้งานรถ"])
 
     with tab1:
-        col_s1, col_s2 = st.columns(2)
-        search_plate = col_s1.text_input("🔍 ค้นหาทะเบียน / ยี่ห้อ / รุ่น")
-        status_filter = col_s2.selectbox("กรองตามสถานะ", ["ทั้งหมด", "ว่าง", "กำลังเช่า", "ซ่อมบำรุง", "ระงับใช้งาน"])
+        status_filter = st.selectbox("กรองตามสถานะ", ["ทั้งหมด", "ว่าง", "กำลังเช่า", "ซ่อมบำรุง", "ระงับใช้งาน"])
 
         res = supabase.table("cars").select("*").order("id", desc=False).execute()
         df_cars = pd.DataFrame(res.data) if res.data else pd.DataFrame()
 
         if not df_cars.empty:
-            if search_plate:
+            # ดึงคำค้นหาจาก Global Search บน Sidebar
+            if global_search:
                 df_cars = df_cars[
-                    df_cars["license_plate"].astype(str).str.contains(search_plate, case=False, na=False) |
-                    df_cars["brand"].astype(str).str.contains(search_plate, case=False, na=False) |
-                    df_cars["model"].astype(str).str.contains(search_plate, case=False, na=False)
+                    df_cars["license_plate"].astype(str).str.contains(global_search, case=False, na=False) |
+                    df_cars["brand"].astype(str).str.contains(global_search, case=False, na=False) |
+                    df_cars["model"].astype(str).str.contains(global_search, case=False, na=False)
                 ]
             if status_filter != "ทั้งหมด":
                 df_cars = df_cars[df_cars["status"] == status_filter]
@@ -438,15 +438,15 @@ elif module_choice == "👥 2. จัดการข้อมูลลูกค�
     tab1, tab2 = st.tabs(["📋 รายชื่อลูกค้า", "➕ เพิ่มลูกค้าใหม่"])
 
     with tab1:
-        search_cust = st.text_input("🔍 ค้นหาลูกค้า (ชื่อ / เบอร์โทร / เลขใบขับขี่)")
         res = supabase.table("customers").select("*").order("id", desc=False).execute()
         df_cust = pd.DataFrame(res.data) if res.data else pd.DataFrame()
 
-        if not df_cust.empty and search_cust:
+        # ดึงคำค้นหาจาก Global Search บน Sidebar
+        if not df_cust.empty and global_search:
             df_cust = df_cust[
-                df_cust["name"].astype(str).str.contains(search_cust, case=False, na=False) |
-                df_cust["phone"].astype(str).str.contains(search_cust, case=False, na=False) |
-                df_cust["driver_license"].astype(str).str.contains(search_cust, case=False, na=False)
+                df_cust["name"].astype(str).str.contains(global_search, case=False, na=False) |
+                df_cust["phone"].astype(str).str.contains(global_search, case=False, na=False) |
+                df_cust["driver_license"].astype(str).str.contains(global_search, case=False, na=False)
             ]
         st.dataframe(df_cust, use_container_width=True)
 
@@ -760,7 +760,7 @@ elif module_choice == "🔧 6. ค่าใช้จ่าย & ซ่อมบ�
             st.info("ยังไม่มีข้อมูลค่าใช้จ่าย")
 
 # ====================================================
-# โมดูล 7: Dashboard & รายงาน (มีทั้ง Line Chart และ Donut Chart)
+# โมดูล 7: Dashboard & รายงาน
 # ====================================================
 elif module_choice == "📊 7. Dashboard & รายงาน":
     st.title("📊 7. Executive Dashboard & Financial Budget")
@@ -785,11 +785,9 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
 
     st.markdown("<br/>", unsafe_allow_html=True)
 
-    # แบ่งพื้นที่การ์ดกราฟ 2 คอลัมน์ (60 : 40)
     col_dash1, col_dash2 = st.columns([1.6, 1])
 
     with col_dash1:
-        # 1. Consolidated Budget Line Chart
         st.markdown("""
             <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-top: 4px solid #d4af37; border-radius: 16px; padding: 20px 22px; box-shadow: 0 4px 25px rgba(15, 23, 42, 0.05); margin-bottom: 25px;">
                 <h3 style="margin: 0; font-size: 18px; color: #0f172a; font-weight: 700;">Consolidated Budget Overview</h3>
@@ -830,7 +828,6 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
         st.markdown("</div>", unsafe_allow_html=True)
 
     with col_dash2:
-        # 2. Car Status Proportion (Donut Chart)
         st.markdown("""
             <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-top: 4px solid #d4af37; border-radius: 16px; padding: 20px 22px; box-shadow: 0 4px 25px rgba(15, 23, 42, 0.05); margin-bottom: 25px;">
                 <h3 style="margin: 0 0 10px 0; font-size: 18px; color: #0f172a; font-weight: 700;">📌 สัดส่วนสถานะรถยนต์</h3>
@@ -854,7 +851,6 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
 
             colors_pie = ['#0f172a', '#1e3a8a', '#2563eb', '#f59e0b', '#94a3b8']
             
-            # Donut Chart 
             wedges, texts, autotexts = ax2.pie(
                 df_status["Count"], 
                 labels=df_status["Status_EN"], 
@@ -865,7 +861,6 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
                 textprops={'color':"#0f172a", 'fontsize':9, 'weight':'bold'}
             )
             
-            # วงกลมสีขาวตรงกลางทำทรง Donut
             centre_circle = plt.Circle((0,0),0.50,fc='white')
             ax2.add_artist(centre_circle)
             ax2.axis("equal")

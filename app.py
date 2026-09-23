@@ -44,24 +44,33 @@ st.markdown("""
         background-color: #f1f5f9 !important;
     }
 
-    /* 2. ปุ่มดึง Sidebar ออกมา / ปุ่มพับ Sidebar ให้เป็นพื้นขาว ตัวดึงสีดำ */
+    /* 2. ปุ่มพับ/ขยาย Sidebar */
+    /* ตอนกางออก (อยู่ใน Sidebar พื้นน้ำเงิน): ปุ่มกลมกลืนกับ Sidebar ตัวดึงสีขาว */
+    [data-testid="stSidebarCollapseButton"] button {
+        background-color: #1e293b !important;
+        border: 1px solid #d4af37 !important;
+        border-radius: 8px !important;
+    }
+    [data-testid="stSidebarCollapseButton"] svg,
+    [data-testid="stSidebarCollapseButton"] svg * {
+        color: #ffffff !important;
+        fill: #ffffff !important;
+        stroke: #ffffff !important;
+    }
+
+    /* ตอนพับเก็บ (ลอยอยู่บนพื้นขาว/นอก Sidebar): พื้นขาว ตัวดึงสีดำเข้ม */
     [data-testid="collapsedControl"] {
         background-color: #ffffff !important;
         border-radius: 8px !important;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15) !important;
     }
-
-    [data-testid="collapsedControl"] button,
-    [data-testid="stSidebarCollapseButton"] button {
+    [data-testid="collapsedControl"] button {
         background-color: #ffffff !important;
         color: #0f172a !important;
         border-radius: 8px !important;
     }
-
     [data-testid="collapsedControl"] svg,
-    [data-testid="stSidebarCollapseButton"] svg,
-    [data-testid="collapsedControl"] svg *,
-    [data-testid="stSidebarCollapseButton"] svg * {
+    [data-testid="collapsedControl"] svg * {
         color: #0f172a !important;
         fill: #0f172a !important;
         stroke: #0f172a !important;
@@ -891,7 +900,7 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
     st.markdown("<br/>", unsafe_allow_html=True)
 
     # 2. Middle Row
-    col_mid1, col_mid2 = st.columns()
+    col_mid1, col_mid2 = st.columns(2)
 
     with col_mid1:
         st.markdown("""
@@ -962,7 +971,7 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
     st.markdown("<br/>", unsafe_allow_html=True)
 
     # 3. Bottom Row
-    col_bot1, col_bot2 = st.columns()
+    col_bot1, col_bot2 = st.columns(2)
 
     with col_bot1:
         st.markdown("""

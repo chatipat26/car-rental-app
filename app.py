@@ -16,7 +16,7 @@ st.set_page_config(
 )
 
 # ----------------------------------------------------
-# Custom CSS: โทนสีขาวคลีน ตัดน้ำเงินกรมพรีเมียม (Clean Luxury Navy)
+# Custom CSS: คลีนหรูหรา กรอบสีฟ้า ตัวหนังสือสีขาวคมชัด
 # ----------------------------------------------------
 st.markdown("""
     <style>
@@ -34,30 +34,26 @@ st.markdown("""
     /* แถบ Sidebar สีน้ำเงินกรมเข้ม สไตล์ Executive */
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%) !important;
-        border-right: 1px solid #cbd5e1 !important;
+        border-right: 2px solid #2563eb !important;
     }
 
     [data-testid="stSidebar"] * {
         color: #f8fafc !important;
     }
 
-    /* หัวข้อและข้อความหลัก สีน้ำเงินกรมเข้ม คมชัด อ่านง่าย */
+    /* หัวข้อและข้อความหลัก สีน้ำเงินกรมเข้ม คมชัด */
     h1, h2, h3, h4, h5, h6 {
         color: #0f172a !important;
         font-weight: 600 !important;
     }
 
-    p, span, label, div {
-        color: #1e293b;
-    }
-
     /* การ์ด Metric แบบสว่าง เรียบหรู */
     [data-testid="stMetric"] {
         background-color: #ffffff !important;
-        border: 1px solid #e2e8f0 !important;
+        border: 1.5px solid #3b82f6 !important;
         border-radius: 12px !important;
         padding: 1.2rem !important;
-        box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05) !important;
+        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.08) !important;
     }
 
     [data-testid="stMetricValue"] {
@@ -69,33 +65,62 @@ st.markdown("""
         color: #475569 !important;
     }
 
-    /* ฟอร์มและการ์ดเนื้อหา (Form & Cards) */
+    /* ฟอร์มและการ์ด Login เน้นกรอบสีฟ้าหรูหรา */
     [data-testid="stForm"] {
         background-color: #ffffff !important;
-        border: 1px solid #e2e8f0 !important;
+        border: 2.5px solid #2563eb !important; /* กรอบสีฟ้าโดดเด่น */
         border-radius: 16px !important;
         padding: 2rem !important;
-        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06) !important;
+        box-shadow: 0 10px 30px rgba(37, 99, 235, 0.15) !important;
     }
 
-    /* Input Fields บนพื้นหลังขาว */
-    .stTextInput input, .stSelectbox select, .stNumberInput input, .stTextArea textarea, .stDateInput input {
-        background-color: #ffffff !important;
+    /* Label ประจำช่องกรอกข้อมูล */
+    .stTextInput label, .stSelectbox label, .stNumberInput label, .stDateInput label, .stTextArea label {
         color: #0f172a !important;
-        border: 1px solid #cbd5e1 !important;
+        font-weight: 500 !important;
+    }
+
+    /* ช่องกรอกข้อมูล (Inputs) และกล่องเลือก (Selectbox) พื้นสีน้ำเงินกรม ตัวหนังสือสีขาว */
+    .stSelectbox div[data-baseweb="select"] {
+        background-color: #0f172a !important;
+        border: 1.5px solid #2563eb !important;
+        border-radius: 8px !important;
+    }
+
+    /* บังคับตัวหนังสือใน Selectbox ให้เป็นสีขาวอ่านง่าย ไม่กลืนกับพื้น */
+    .stSelectbox div[data-baseweb="select"] * {
+        color: #ffffff !important;
+        font-weight: 500 !important;
+    }
+
+    /* ช่อง Input อื่นๆ (Text / Number / Date / Textarea) */
+    .stTextInput input, .stNumberInput input, .stDateInput input, .stTextArea textarea {
+        background-color: #0f172a !important;
+        color: #ffffff !important;
+        border: 1.5px solid #2563eb !important;
         border-radius: 8px !important;
     }
 
     .stTextInput input:focus, .stSelectbox select:focus, .stNumberInput input:focus {
-        border-color: #2563eb !important;
-        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2) !important;
+        border-color: #38bdf8 !important;
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.3) !important;
+    }
+
+    /* ตัวหนังสือใน Dropdown Menu Popup ตอนกดเลือก */
+    div[data-baseweb="menu"] {
+        background-color: #0f172a !important;
+        border: 1.5px solid #2563eb !important;
+    }
+
+    div[data-baseweb="menu"] * {
+        color: #ffffff !important;
     }
 
     /* ปุ่มกดสีน้ำเงินกรมพรีเมียม */
     div.stButton > button {
         background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%) !important;
         color: #ffffff !important;
-        border: none !important;
+        border: 1px solid #3b82f6 !important;
         border-radius: 8px !important;
         padding: 0.6rem 1.4rem !important;
         font-weight: 500 !important;
@@ -105,7 +130,7 @@ st.markdown("""
 
     div.stButton > button:hover {
         background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%) !important;
-        box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35) !important;
+        box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4) !important;
         transform: translateY(-1px) !important;
     }
 
@@ -116,26 +141,26 @@ st.markdown("""
 
     .stTabs [data-baseweb="tab"] {
         height: 45px;
-        background-color: #f1f5f9 !important;
+        background-color: #e2e8f0 !important;
         border-radius: 8px !important;
         padding-left: 18px !important;
         padding-right: 18px !important;
-        color: #475569 !important;
+        color: #334155 !important;
         font-weight: 500 !important;
-        border: 1px solid #e2e8f0 !important;
+        border: 1px solid #cbd5e1 !important;
     }
 
     .stTabs [aria-selected="true"] {
         background-color: #1e3a8a !important;
         color: #ffffff !important;
-        border: 1px solid #1e3a8a !important;
+        border: 1px solid #2563eb !important;
     }
 
     /* Dataframe ตารางข้อมูล */
     [data-testid="stDataFrame"] {
         background-color: #ffffff !important;
         border-radius: 12px !important;
-        border: 1px solid #e2e8f0 !important;
+        border: 1.5px solid #cbd5e1 !important;
         box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
     }
     </style>
@@ -183,7 +208,7 @@ def login_page():
     with col2:
         st.markdown("""
             <div style="text-align: center; margin-bottom: 25px;">
-                <div style="background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); width: 75px; height: 75px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; box-shadow: 0 8px 20px rgba(15, 23, 42, 0.25);">
+                <div style="background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); width: 75px; height: 75px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3); border: 2.5px solid #2563eb;">
                     <span style="font-size: 38px;">🚗</span>
                 </div>
                 <h1 style="color: #0f172a !important; font-size: 34px; margin-bottom: 5px; font-weight: 700; letter-spacing: 1px;">CAR RENTAL ERP</h1>
@@ -720,7 +745,6 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
     st.markdown("---")
     col_chart1, col_chart2 = st.columns(2)
 
-    # ปรับแต่งโทนสีกราฟเป็นโทนสว่างตัดน้ำเงินพรีเมียม
     plt.style.use('default')
     plt.rcParams['font.sans-serif'] = 'Kanit'
     plt.rcParams['axes.unicode_minus'] = False
@@ -828,8 +852,8 @@ elif module_choice == "📁 9. ศูนย์เอกสาร & PDF":
         st.markdown("### 📄 สัญญาเช่ารถยนต์ (Rental Agreement)")
         
         doc_html = f"""
-        <div style="border:2px solid #1e3a8a; padding:25px; background-color:#ffffff; color:#0f172a; font-family:'Kanit', sans-serif; border-radius:12px; box-shadow:0 4px 15px rgba(15,23,42,0.06);">
-            <div style="text-align:center; border-bottom:2px solid #1e3a8a; padding-bottom:10px; margin-bottom:15px;">
+        <div style="border:2.5px solid #2563eb; padding:25px; background-color:#ffffff; color:#0f172a; font-family:'Kanit', sans-serif; border-radius:12px; box-shadow:0 4px 15px rgba(37,99,235,0.1);">
+            <div style="text-align:center; border-bottom:2px solid #2563eb; padding-bottom:10px; margin-bottom:15px;">
                 <h2 style="color:#1e3a8a; margin:0; font-weight:700;">เอกสารสัญญาเช่ารถยนต์</h2>
                 <p style="color:#64748b; margin:5px 0 0 0;">เลขที่สัญญา: <b style="color:#0f172a;">{doc['contract_no']}</b> | วันที่ทำสัญญา: {doc['created_at'][:10] if doc.get('created_at') else '-'}</p>
             </div>

@@ -141,6 +141,7 @@ st.markdown("""
         color: #64748b !important;
     }
 
+    /* Form สไตล์การ์ดเข้ม */
     [data-testid="stForm"] {
         background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%) !important;
         border: 1px solid #334155 !important;
@@ -150,12 +151,22 @@ st.markdown("""
         box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2) !important;
     }
 
-    /* ปรับแต่ง Label ของ Input ในหน้าหลักให้เป็นสีดำเข้มอ่านง่าย */
-    .stMain .stTextInput label, 
-    .stMain .stSelectbox label, 
-    .stMain .stNumberInput label, 
-    .stMain .stDateInput label, 
-    .stMain .stTextArea label {
+    /* บังคับตัวอักษรและ Label ภายใน Form ทั้งหมด (รวมหน้า Login) ให้เป็นสีขาวสว่าง */
+    [data-testid="stForm"] label,
+    [data-testid="stForm"] label p,
+    [data-testid="stForm"] label span,
+    [data-testid="stForm"] p,
+    [data-testid="stForm"] span {
+        color: #ffffff !important;
+        font-weight: 500 !important;
+    }
+
+    /* ปรับแต่ง Label ของ Input ในหน้าหลัก (อยู่นอก Form) ให้เป็นสีดำเข้ม */
+    .stMain div:not([data-testid="stForm"]) > .stTextInput label, 
+    .stMain div:not([data-testid="stForm"]) > .stSelectbox label, 
+    .stMain div:not([data-testid="stForm"]) > .stNumberInput label, 
+    .stMain div:not([data-testid="stForm"]) > .stDateInput label, 
+    .stMain div:not([data-testid="stForm"]) > .stTextArea label {
         color: #0f172a !important;
         font-weight: 600 !important;
     }
@@ -252,7 +263,7 @@ def login_page():
                     <span style="font-size: 38px;">🚗</span>
                 </div>
                 <h1 style="color: #ffffff !important; text-align: center;">CAR RENTAL ERP</h1>
-                <p style="color: #475569; font-size: 15px; font-weight: 500;">ระบบบริหารจัดการรถเช่าส่วนกลาง ระดับพรีเมียม</p>
+                <p style="color: #cbd5e1 !important; font-size: 15px; font-weight: 500;">ระบบบริหารจัดการรถเช่าส่วนกลาง ระดับพรีเมียม</p>
             </div>
         """, unsafe_allow_html=True)
         
@@ -331,7 +342,6 @@ if module_choice == "🚙 1. จัดการข้อมูลรถ":
     tab1, tab2, tab3 = st.tabs(["📋 รายการรถทั้งหมด", "➕ เพิ่มรถยนต์ใหม่", "✏️ แก้ไข/ระงับใช้งานรถ"])
 
     with tab1:
-        # ปรับ Label เป็น "เลือกสถานะ" ตามคำขอครับ
         status_filter = st.selectbox("เลือกสถานะ", ["ทั้งหมด", "ว่าง", "กำลังเช่า", "ซ่อมบำรุง", "ระงับใช้งาน"])
 
         res = supabase.table("cars").select("*").order("id", desc=False).execute()
@@ -765,7 +775,7 @@ elif module_choice == "🔧 6. ค่าใช้จ่าย & ซ่อมบ�
             st.info("ยังไม่มีข้อมูลค่าใช้จ่าย")
 
 # ====================================================
-# โมดูล 7: Executive Dashboard (แก้ไขภาษาอังกฤษป้องกันกรอบสี่เหลี่ยม [ท])
+# โมดูล 7: Executive Dashboard
 # ====================================================
 elif module_choice == "📊 7. Dashboard & รายงาน":
     st.title("📊 7. Executive Dashboard & Financial Overview")
@@ -898,8 +908,6 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
                 wedgeprops=dict(width=0.35, edgecolor='w', linewidth=2))
 
         ax2.text(0, -0.1, f"{util_rate}%", ha='center', va='center', fontsize=26, fontweight='bold', color='#0f172a')
-        
-        # แก้ข้อความภาษาอังกฤษเพื่อแก้สี่เหลี่ยม [ท] สวยงามแบบตัวอย่าง
         ax2.text(0, -0.38, "Rental Utilization Rate", ha='center', va='center', fontsize=9, color='#64748b', fontweight='500')
 
         ax2.axis('equal')

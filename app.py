@@ -274,7 +274,7 @@ DOCS_DIR = os.path.abspath("documents")
 os.makedirs(DOCS_DIR, exist_ok=True)
 
 # ====================================================
-# 2. เมนูหลักประจำแอปพลิเคชัน (Sidebar Navigation + Global Search)
+# 2. เมนูหลักประจำแอปพลิเคชัน (Sidebar Navigation + Search)
 # ====================================================
 st.sidebar.markdown("""
     <div style="padding: 10px 5px 10px 5px; display: flex; align-items: center; gap: 12px;">
@@ -288,8 +288,8 @@ st.sidebar.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# 🔍 ช่องค้นหาด่วน (Global Search Bar) บน Sidebar สไตล์ Prody UI
-global_search = st.sidebar.text_input("Search", placeholder="🔍 ค้นหาด่วนทั่วทั้งระบบ...", label_visibility="collapsed")
+# 🔍 ช่องค้นหาด่วน (Global Search Bar) บน Sidebar
+global_search = st.sidebar.text_input("Search", placeholder="ค้นหา", label_visibility="collapsed")
 st.sidebar.markdown("<div style='margin-bottom: 12px;'></div>", unsafe_allow_html=True)
 
 module_choice = st.sidebar.radio(
@@ -331,7 +331,6 @@ if module_choice == "🚙 1. จัดการข้อมูลรถ":
         df_cars = pd.DataFrame(res.data) if res.data else pd.DataFrame()
 
         if not df_cars.empty:
-            # ดึงคำค้นหาจาก Global Search บน Sidebar
             if global_search:
                 df_cars = df_cars[
                     df_cars["license_plate"].astype(str).str.contains(global_search, case=False, na=False) |
@@ -441,7 +440,6 @@ elif module_choice == "👥 2. จัดการข้อมูลลูกค�
         res = supabase.table("customers").select("*").order("id", desc=False).execute()
         df_cust = pd.DataFrame(res.data) if res.data else pd.DataFrame()
 
-        # ดึงคำค้นหาจาก Global Search บน Sidebar
         if not df_cust.empty and global_search:
             df_cust = df_cust[
                 df_cust["name"].astype(str).str.contains(global_search, case=False, na=False) |

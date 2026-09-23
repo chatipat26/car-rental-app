@@ -15,6 +15,100 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# ----------------------------------------------------
+# Custom CSS: โทนสีน้ำเงินพรีเมียม (Deep Navy & Luxury Blue Theme)
+# ----------------------------------------------------
+st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');
+
+    html, body, [class*="css"] {
+        font-family: 'Kanit', sans-serif;
+    }
+
+    /* พื้นหลังหลักของระบบ */
+    .stApp {
+        background-color: #f8fafc;
+    }
+
+    /* แถบ Sidebar โทนน้ำเงินเข้มหรูหรา */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    }
+
+    [data-testid="stSidebar"] * {
+        color: #f8fafc !important;
+    }
+
+    /* ปุ่มกดสไตล์ Premium Navy Button */
+    div.stButton > button {
+        background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+        color: white !important;
+        border: none;
+        border-radius: 8px;
+        padding: 0.5rem 1.2rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+    }
+
+    div.stButton > button:hover {
+        background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+        box-shadow: 0 6px 12px -1px rgba(37, 99, 235, 0.4);
+        transform: translateY(-1px);
+    }
+
+    /* หัวข้อข่าว/ข้อความหลัก */
+    h1, h2, h3 {
+        color: #0f172a !important;
+        font-weight: 600 !important;
+    }
+
+    /* ตกแต่ง Metric Card */
+    [data-testid="stMetric"] {
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 1rem;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+    }
+
+    [data-testid="stMetricValue"] {
+        color: #1e3a8a !important;
+        font-weight: 700;
+    }
+
+    /* ตกแต่งกรอบ Form */
+    [data-testid="stForm"] {
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+    }
+
+    /* Header แท็บการทำงาน */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+    }
+
+    .stTabs [data-baseweb="tab"] {
+        height: 45px;
+        background-color: #e2e8f0;
+        border-radius: 8px;
+        padding-left: 16px;
+        padding-right: 16px;
+        color: #334155;
+        font-weight: 500;
+    }
+
+    .stTabs [aria-selected="true"] {
+        background-color: #1e3a8a !important;
+        color: #ffffff !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 @st.cache_resource
 def init_supabase() -> Client:
     url = st.secrets["SUPABASE_URL"]
@@ -42,13 +136,19 @@ if "username" not in st.session_state:
     st.session_state["username"] = ""
 
 def login_page():
-    st.title("🔐 เข้าสู่ระบบ Car Rental ERP")
-    st.caption("ระบบบริหารจัดการรถเช่าส่วนกลาง (Cloud Supabase Database)")
-    st.markdown("---")
+    st.markdown("<br/><br/>", unsafe_allow_html=True)
+    col1, col2, col3 = st.columns([1, 1.8, 1])
     
-    col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
+        st.markdown("""
+            <div style="text-align: center; margin-bottom: 25px;">
+                <h1 style="color: #0f172a; font-size: 32px; margin-bottom: 5px;">🚗 CAR RENTAL ERP</h1>
+                <p style="color: #64748b; font-size: 16px;">ระบบบริหารจัดการรถเช่าส่วนกลาง ระดับพรีเมียม</p>
+            </div>
+        """, unsafe_allow_html=True)
+        
         with st.form("login_form"):
+            st.subheader("🔐 เข้าสู่ระบบ")
             username = st.text_input("👤 ชื่อผู้ใช้งาน (Username)")
             password = st.text_input("🔑 รหัสผ่าน (Password)", type="password")
             submitted = st.form_submit_button("เข้าสู่ระบบ", use_container_width=True)
@@ -72,14 +172,21 @@ os.makedirs(DOCS_DIR, exist_ok=True)
 # ====================================================
 # 2. เมนูหลักประจำแอปพลิเคชัน (Sidebar Navigation)
 # ====================================================
-st.sidebar.title("🚗 CAR RENTAL ERP")
-st.sidebar.caption("ระบบบริหารจัดการรถเช่าส่วนกลาง")
+st.sidebar.markdown("""
+    <div style="text-align: center; padding: 10px 0;">
+        <h2 style="color: #ffffff !important; margin: 0;">🚗 CAR RENTAL</h2>
+        <p style="color: #94a3b8 !important; font-size: 13px; margin: 0;">Enterprise ERP Solution</p>
+    </div>
+""", unsafe_allow_html=True)
 
+st.sidebar.markdown("---")
 st.sidebar.markdown(f"👤 ผู้ใช้งาน: **{st.session_state['username']}**")
+
 if st.sidebar.button("🚪 ออกจากระบบ (Logout)", use_container_width=True):
     st.session_state["logged_in"] = False
     st.session_state["username"] = ""
     st.rerun()
+
 st.sidebar.markdown("---")
 
 module_choice = st.sidebar.radio(
@@ -374,7 +481,7 @@ elif module_choice == "🔄 4. ระบบรับคืนรถ":
         st.subheader(f"📋 รายละเอียดสัญญา: `{cnt_data['contract_no']}`")
         
         col_i1, col_i2, col_i3, col_i4 = st.columns(4)
-        col_i1.write(f"**ผู้เช่า:** {cnt_data['customers']['name']}")
+        col_i1.write(f"**ผู้เช่า:** คุณ{cnt_data['customers']['name']}")
         col_i2.write(f"**ทะเบียนรถ:** {cnt_data['cars']['license_plate']}")
         col_i3.write(f"**กำหนดคืน:** {cnt_data['end_date']}")
         col_i4.write(f"**เงินมัดจำรับไว้:** {float(cnt_data['deposit'] or 0):,.2f} ฿")
@@ -568,6 +675,10 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
     st.markdown("---")
     col_chart1, col_chart2 = st.columns(2)
 
+    # ปรับแต่งโทนสีกราฟเป็นโทน Navy/Blue คุมโทนพรีเมียม
+    plt.rcParams['font.sans-serif'] = 'Kanit'
+    plt.rcParams['axes.unicode_minus'] = False
+
     with col_chart1:
         st.subheader("📌 สัดส่วนสถานะรถยนต์")
         if cars_data:
@@ -575,7 +686,8 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
             df_status.columns = ["Status", "Count"]
 
             fig, ax = plt.subplots(figsize=(5, 4))
-            ax.pie(df_status["Count"], labels=df_status["Status"], autopct="%1.1f%%", startangle=90)
+            colors_pie = ['#1e3a8a', '#2563eb', '#3b82f6', '#93c5fd', '#cbd5e1']
+            ax.pie(df_status["Count"], labels=df_status["Status"], autopct="%1.1f%%", startangle=90, colors=colors_pie)
             ax.axis("equal")
             st.pyplot(fig)
         else:
@@ -586,9 +698,9 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
         fig2, ax2 = plt.subplots(figsize=(5, 4))
         categories = ["รายได้รวม", "ค่าใช้จ่าย", "กำไรสุทธิ"]
         values = [total_rev, total_exp, net_profit]
-        colors = ["#2ecc71", "#e74c3c", "#3498db"]
+        colors_bar = ["#1e3a8a", "#ef4444", "#0284c7"]
 
-        ax2.bar(categories, values, color=colors)
+        ax2.bar(categories, values, color=colors_bar)
         ax2.set_ylabel("จำนวนเงิน (บาท)")
         st.pyplot(fig2)
 
@@ -663,17 +775,18 @@ elif module_choice == "📁 9. ศูนย์เอกสาร & PDF":
         st.markdown("### 📄 สัญญาเช่ารถยนต์ (Rental Agreement)")
         
         doc_html = f"""
-        <div style="border:2px solid #333; padding:20px; background-color:#ffffff; color:#000; font-family:sans-serif;">
-            <h2 style="text-align:center; margin-bottom:5px;">เอกสารสัญญาเช่ารถยนต์</h2>
-            <p style="text-align:center; color:#555;">เลขที่สัญญา: <b>{doc['contract_no']}</b> | วันที่ทำสัญญา: {doc['created_at'][:10] if doc.get('created_at') else '-'}</p>
-            <hr/>
+        <div style="border:2px solid #1e3a8a; padding:25px; background-color:#ffffff; color:#0f172a; font-family:'Kanit', sans-serif; border-radius:10px;">
+            <div style="text-align:center; border-bottom:2px solid #1e3a8a; padding-bottom:10px; margin-bottom:15px;">
+                <h2 style="color:#1e3a8a; margin:0;">เอกสารสัญญาเช่ารถยนต์</h2>
+                <p style="color:#64748b; margin:5px 0 0 0;">เลขที่สัญญา: <b style="color:#0f172a;">{doc['contract_no']}</b> | วันที่ทำสัญญา: {doc['created_at'][:10] if doc.get('created_at') else '-'}</p>
+            </div>
             <p><b>ผู้เช่า:</b> คุณ{doc['customers']['name']} | <b>เบอร์โทรศัพท์:</b> {doc['customers']['phone']}</p>
             <p><b>เลขที่ใบขับขี่:</b> {doc['customers']['driver_license']} | <b>ที่อยู่:</b> {doc['customers']['address']}</p>
-            <hr/>
+            <hr style="border:0.5px solid #e2e8f0;"/>
             <p><b>ข้อมูลรถยนต์ที่เช่า:</b> ทะเบียน {doc['cars']['license_plate']} ({doc['cars']['brand']} {doc['cars']['model']})</p>
             <p><b>ระยะเวลาเช่า:</b> ตั้งแต่วันที่ {doc['start_date']} ถึงวันที่ {doc['end_date']} (รวม {doc['days']} วัน)</p>
             <p><b>อัตราค่าเช่า:</b> {float(doc['rental_rate']):,.2f} บาท/วัน | <b>เงินมัดจำประกัน:</b> {float(doc['deposit']):,.2f} บาท</p>
-            <p><b>ยอดรวมค่าเช่าสุทธิ:</b> <span style="font-size:18px; font-weight:bold; color:blue;">{float(doc['grand_total']):,.2f} บาท</span></p>
+            <p><b>ยอดรวมค่าเช่าสุทธิ:</b> <span style="font-size:20px; font-weight:bold; color:#1e3a8a;">{float(doc['grand_total']):,.2f} บาท</span></p>
             <br/><br/>
             <table width="100%" style="text-align:center; margin-top:30px;">
                 <tr>
@@ -683,5 +796,5 @@ elif module_choice == "📁 9. ศูนย์เอกสาร & PDF":
             </table>
         </div>
         """
-        st.components.v1.html(doc_html, height=450, scrolling=True)
+        st.components.v1.html(doc_html, height=480, scrolling=True)
         st.info("💡 สามารถกด `Ctrl + P` เพื่อพิมพ์หรือบันทึกเอกสารสัญญานี้เป็นไฟล์ PDF ได้ทันที")

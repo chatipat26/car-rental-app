@@ -759,7 +759,7 @@ elif module_choice == "🔧 6. ค่าใช้จ่าย & ซ่อมบ�
             st.info("ยังไม่มีข้อมูลค่าใช้จ่าย")
 
 # ====================================================
-# โมดูล 7: Executive Dashboard (ถอดแบบ Fintech UI)
+# โมดูล 7: Executive Dashboard (แก้ไข Layout และ HTML Strings เรียบร้อย)
 # ====================================================
 elif module_choice == "📊 7. Dashboard & รายงาน":
     st.title("📊 7. Executive Dashboard & Financial Overview")
@@ -800,7 +800,7 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
         </div>
     """, unsafe_allow_html=True)
 
-    # Smooth Line Chart (Pandas freq='ME' & Smooth Curve)
+    # Smooth Line Chart
     dates = pd.date_range(end=datetime.now(), periods=12, freq='ME').strftime('%b')
     rev_trend = [35000, 48000, 42000, 58000, 51000, 68000, 62000, 79000, 72000, 88000, 84000, max(95000.0, total_rev)]
     
@@ -836,46 +836,49 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
 
     with col_mid1:
         st.markdown("""
-            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); min-height: 320px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); margin-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
                     <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #0f172a;">สรุปสถานะรายคัน (Top Vehicles) ℹ️</h3>
-                    <span style="color: #2563eb; font-size: 13px; font-weight: 600; cursor: pointer;">See all ❯</span>
+                    <span style="color: #2563eb; font-size: 13px; font-weight: 600;">See all ❯</span>
                 </div>
+            </div>
         """, unsafe_allow_html=True)
 
-        for car in cars_data[:3]:
-            plate = car.get("license_plate", "-")
-            brand = f"{car.get('brand', '')} {car.get('model', '')}"
-            price = float(car.get("price_per_day") or 0)
-            status_color = "#16a34a" if car.get("status") == "ว่าง" else "#2563eb" if car.get("status") == "กำลังเช่า" else "#dc2626"
-            
-            st.markdown(f"""
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f1f5f9;">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;">🚗</div>
-                        <div>
-                            <div style="font-weight: 700; color: #0f172a; font-size: 14px;">{plate}</div>
-                            <div style="color: #94a3b8; font-size: 12px;">{brand}</div>
+        if cars_data:
+            for car in cars_data[:3]:
+                plate = car.get("license_plate", "-")
+                brand = f"{car.get('brand', '')} {car.get('model', '')}"
+                price = float(car.get("price_per_day") or 0)
+                status_color = "#16a34a" if car.get("status") == "ว่าง" else "#2563eb" if car.get("status") == "กำลังเช่า" else "#dc2626"
+                
+                st.markdown(f"""
+                    <div style="background-color: #ffffff; border: 1px solid #f1f5f9; border-radius: 12px; padding: 12px 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;">🚗</div>
+                            <div>
+                                <div style="font-weight: 700; color: #0f172a; font-size: 14px;">{plate}</div>
+                                <div style="color: #94a3b8; font-size: 12px;">{brand}</div>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-weight: 700; color: #0f172a; font-size: 14px;">฿{price:,.0f} <span style='font-size:10px; color:#94a3b8;'>/วัน</span></div>
+                            <div style="color: {status_color}; font-size: 12px; font-weight: 600;">● {car.get('status')}</div>
                         </div>
                     </div>
-                    <div style="text-align: right;">
-                        <div style="font-weight: 700; color: #0f172a; font-size: 14px;">฿{price:,.0f} <span style='font-size:10px; color:#94a3b8;'>/วัน</span></div>
-                        <div style="color: {status_color}; font-size: 12px; font-weight: 600;">● {car.get('status')}</div>
-                    </div>
-                </div>
-            """, unsafe_allow_html=True)
-
-        st.markdown("</div>", unsafe_allow_html=True)
+                """, unsafe_allow_html=True)
+        else:
+            st.info("ยังไม่มีข้อมูลรถยนต์")
 
     with col_mid2:
         util_rate = int((rented_cars / total_cars * 100)) if total_cars > 0 else 0
         
-        st.markdown(f"""
-            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); min-height: 320px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+        st.markdown("""
+            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 22px 22px 5px 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
                     <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #0f172a;">Fleet Utilization Index ℹ️</h3>
-                    <span style="color: #2563eb; font-size: 13px; font-weight: 600; cursor: pointer;">See all ❯</span>
+                    <span style="color: #2563eb; font-size: 13px; font-weight: 600;">See all ❯</span>
                 </div>
+            </div>
         """, unsafe_allow_html=True)
 
         fig2, ax2 = plt.subplots(figsize=(4, 2.2))
@@ -888,14 +891,14 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
         ax2.pie(values, colors=colors, startangle=180, counterclock=False, 
                 wedgeprops=dict(width=0.35, edgecolor='w', linewidth=2))
 
-        ax2.text(0, -0.15, f"{util_rate}%", ha='center', va='center', fontsize=28, fontweight='bold', color='#0f172a')
-        ax2.text(0, -0.42, "อัตราการถูกเช่าจริง", ha='center', va='center', fontsize=11, color='#64748b')
+        ax2.text(0, -0.1, f"{util_rate}%", ha='center', va='center', fontsize=26, fontweight='bold', color='#0f172a')
+        ax2.text(0, -0.35, "อัตราการถูกเช่าจริง", ha='center', va='center', fontsize=10, color='#64748b')
 
         ax2.axis('equal')
+        for spine in ax2.spines.values():
+            spine.set_visible(False)
         plt.tight_layout()
         st.pyplot(fig2)
-
-        st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<br/>", unsafe_allow_html=True)
 
@@ -904,11 +907,12 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
 
     with col_bot1:
         st.markdown("""
-            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); min-height: 280px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); margin-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
                     <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #0f172a;">รายการธุรกรรมล่าสุด (Recent Activities) ℹ️</h3>
-                    <span style="color: #2563eb; font-size: 13px; font-weight: 600; cursor: pointer;">See all ❯</span>
+                    <span style="color: #2563eb; font-size: 13px; font-weight: 600;">See all ❯</span>
                 </div>
+            </div>
         """, unsafe_allow_html=True)
 
         if payments_data:
@@ -918,7 +922,7 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
                 pay_type = pay.get("pay_type", "ค่าเช่ารถ")
                 
                 st.markdown(f"""
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f1f5f9;">
+                    <div style="background-color: #ffffff; border: 1px solid #f1f5f9; border-radius: 12px; padding: 12px 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
                         <div style="display: flex; align-items: center; gap: 12px;">
                             <div style="background-color: #eff6ff; color: #2563eb; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: bold;">↗</div>
                             <div>
@@ -935,11 +939,9 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
         else:
             st.info("ยังไม่มีประวัติการชำระเงิน")
 
-        st.markdown("</div>", unsafe_allow_html=True)
-
     with col_bot2:
-        st.markdown("""
-            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); min-height: 280px;">
+        st.markdown(f"""
+            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                     <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #0f172a;">สรุปยอดรายได้ / ค่าใช้จ่ายประจำเดือน ℹ️</h3>
                 </div>

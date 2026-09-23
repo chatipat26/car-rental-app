@@ -16,7 +16,7 @@ st.set_page_config(
 )
 
 # ----------------------------------------------------
-# Custom CSS: คลีนหรูหรา กรอบสีฟ้า ตัวหนังสือสีขาวคมชัด
+# Custom CSS: กรอบลอคอินกรมเข้มตัดฟ้า + ช่องกรอกสีขาวคมชัด
 # ----------------------------------------------------
 st.markdown("""
     <style>
@@ -34,7 +34,7 @@ st.markdown("""
     /* แถบ Sidebar สีน้ำเงินกรมเข้ม สไตล์ Executive */
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%) !important;
-        border-right: 2px solid #2563eb !important;
+        border-right: 2.5px solid #2563eb !important;
     }
 
     [data-testid="stSidebar"] * {
@@ -50,7 +50,7 @@ st.markdown("""
     /* การ์ด Metric แบบสว่าง เรียบหรู */
     [data-testid="stMetric"] {
         background-color: #ffffff !important;
-        border: 1.5px solid #3b82f6 !important;
+        border: 1.5px solid #2563eb !important;
         border-radius: 12px !important;
         padding: 1.2rem !important;
         box-shadow: 0 4px 15px rgba(37, 99, 235, 0.08) !important;
@@ -65,72 +65,73 @@ st.markdown("""
         color: #475569 !important;
     }
 
-    /* ฟอร์มและการ์ด Login เน้นกรอบสีฟ้าหรูหรา */
+    /* กรอบฟอร์มทั้งหมด และการ์ด Login (โทนกรมเข้ม + กรอบสีฟ้าพรีเมียม) */
     [data-testid="stForm"] {
-        background-color: #ffffff !important;
+        background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%) !important;
         border: 2.5px solid #2563eb !important; /* กรอบสีฟ้าโดดเด่น */
         border-radius: 16px !important;
-        padding: 2rem !important;
-        box-shadow: 0 10px 30px rgba(37, 99, 235, 0.15) !important;
+        padding: 2.5rem !important;
+        box-shadow: 0 10px 30px rgba(37, 99, 235, 0.25) !important;
     }
 
-    /* Label ประจำช่องกรอกข้อมูล */
+    /* ข้อความ Label หัวข้อช่องกรอกเป็นสีขาวสว่าง อ่านง่ายบนการ์ดกรมเข้ม */
     .stTextInput label, .stSelectbox label, .stNumberInput label, .stDateInput label, .stTextArea label {
+        color: #ffffff !important;
+        font-weight: 500 !important;
+    }
+
+    /* ช่องกรอกข้อมูล (Inputs) และกล่องเลือก (Selectbox) พื้นหลังสีขาว + ตัวหนังสือสีดำ/กรมเข้ม */
+    .stSelectbox div[data-baseweb="select"] {
+        background-color: #ffffff !important;
+        border: 1.5px solid #3b82f6 !important;
+        border-radius: 8px !important;
+    }
+
+    /* ตัวหนังสือภายในช่อง Selectbox เป็นสีดำคมชัด */
+    .stSelectbox div[data-baseweb="select"] * {
         color: #0f172a !important;
         font-weight: 500 !important;
     }
 
-    /* ช่องกรอกข้อมูล (Inputs) และกล่องเลือก (Selectbox) พื้นสีน้ำเงินกรม ตัวหนังสือสีขาว */
-    .stSelectbox div[data-baseweb="select"] {
-        background-color: #0f172a !important;
-        border: 1.5px solid #2563eb !important;
+    /* ช่อง Input อื่นๆ (Text / Number / Date / Textarea) พื้นสีขาว */
+    .stTextInput input, .stNumberInput input, .stDateInput input, .stTextArea textarea {
+        background-color: #ffffff !important;
+        color: #0f172a !important;
+        border: 1.5px solid #3b82f6 !important;
         border-radius: 8px !important;
-    }
-
-    /* บังคับตัวหนังสือใน Selectbox ให้เป็นสีขาวอ่านง่าย ไม่กลืนกับพื้น */
-    .stSelectbox div[data-baseweb="select"] * {
-        color: #ffffff !important;
         font-weight: 500 !important;
     }
 
-    /* ช่อง Input อื่นๆ (Text / Number / Date / Textarea) */
-    .stTextInput input, .stNumberInput input, .stDateInput input, .stTextArea textarea {
-        background-color: #0f172a !important;
-        color: #ffffff !important;
-        border: 1.5px solid #2563eb !important;
-        border-radius: 8px !important;
-    }
-
     .stTextInput input:focus, .stSelectbox select:focus, .stNumberInput input:focus {
-        border-color: #38bdf8 !important;
-        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.3) !important;
+        border-color: #2563eb !important;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3) !important;
     }
 
-    /* ตัวหนังสือใน Dropdown Menu Popup ตอนกดเลือก */
+    /* เมนูดรอปดาวน์ List ตอนคลิกเลือก */
     div[data-baseweb="menu"] {
-        background-color: #0f172a !important;
+        background-color: #ffffff !important;
         border: 1.5px solid #2563eb !important;
     }
 
     div[data-baseweb="menu"] * {
-        color: #ffffff !important;
+        color: #0f172a !important;
     }
 
-    /* ปุ่มกดสีน้ำเงินกรมพรีเมียม */
+    /* ปุ่มกดสีฟ้าพรีเมียม */
     div.stButton > button {
-        background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%) !important;
+        background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%) !important;
         color: #ffffff !important;
-        border: 1px solid #3b82f6 !important;
+        border: 1px solid #60a5fa !important;
         border-radius: 8px !important;
         padding: 0.6rem 1.4rem !important;
-        font-weight: 500 !important;
+        font-weight: 600 !important;
         transition: all 0.3s ease !important;
-        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2) !important;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
     }
 
     div.stButton > button:hover {
-        background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%) !important;
-        box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4) !important;
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+        box-shadow: 0 6px 18px rgba(37, 99, 235, 0.5) !important;
         transform: translateY(-1px) !important;
     }
 
@@ -208,7 +209,7 @@ def login_page():
     with col2:
         st.markdown("""
             <div style="text-align: center; margin-bottom: 25px;">
-                <div style="background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); width: 75px; height: 75px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3); border: 2.5px solid #2563eb;">
+                <div style="background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); width: 75px; height: 75px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35); border: 2.5px solid #2563eb;">
                     <span style="font-size: 38px;">🚗</span>
                 </div>
                 <h1 style="color: #0f172a !important; font-size: 34px; margin-bottom: 5px; font-weight: 700; letter-spacing: 1px;">CAR RENTAL ERP</h1>
@@ -217,7 +218,7 @@ def login_page():
         """, unsafe_allow_html=True)
         
         with st.form("login_form"):
-            st.markdown("<h3 style='text-align: center; color: #1e3a8a !important; margin-bottom: 20px; font-weight: 600;'>🔐 เข้าสู่ระบบ</h3>", unsafe_allow_html=True)
+            st.markdown("<h3 style='text-align: center; color: #38bdf8 !important; margin-bottom: 20px; font-weight: 600;'>🔐 เข้าสู่ระบบ</h3>", unsafe_allow_html=True)
             username = st.text_input("👤 ชื่อผู้ใช้งาน (Username)")
             password = st.text_input("🔑 รหัสผ่าน (Password)", type="password")
             st.markdown("<br/>", unsafe_allow_html=True)

@@ -900,7 +900,7 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
     st.markdown("<br/>", unsafe_allow_html=True)
 
     # 2. Middle Row
-    col_mid1, col_mid2 = st.columns(2)
+    col_mid1, col_mid2 = st.columns()
 
     with col_mid1:
         st.markdown("""
@@ -971,7 +971,7 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
     st.markdown("<br/>", unsafe_allow_html=True)
 
     # 3. Bottom Row
-    col_bot1, col_bot2 = st.columns(2)
+    col_bot1, col_bot2 = st.columns()
 
     with col_bot1:
         st.markdown("""

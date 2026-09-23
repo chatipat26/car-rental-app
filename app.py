@@ -16,7 +16,7 @@ st.set_page_config(
 )
 
 # ----------------------------------------------------
-# Custom CSS: โทนสีน้ำเงินพรีเมียม (Deep Navy & Luxury Blue Theme)
+# Custom CSS: โทนสีน้ำเงินกรมพรีเมียม (Cohesive Deep Navy Theme)
 # ----------------------------------------------------
 st.markdown("""
     <style>
@@ -26,14 +26,15 @@ st.markdown("""
         font-family: 'Kanit', sans-serif;
     }
 
-    /* พื้นหลังหลักของระบบ */
-    .stApp {
-        background-color: #f8fafc;
+    /* บังคับสีพื้นหลังของทั้งแอป รวมถึงหน้า Login ให้เป็นสีน้ำเงินกรมเข้ม */
+    .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"], [data-testid="stMain"], .main {
+        background-color: #0f172a !important;
     }
 
     /* แถบ Sidebar โทนน้ำเงินเข้มหรูหรา */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+        background: linear-gradient(180deg, #0b1329 0%, #1e293b 100%) !important;
+        border-right: 1px solid #1e3a8a !important;
     }
 
     [data-testid="stSidebar"] * {
@@ -42,49 +43,70 @@ st.markdown("""
 
     /* ปุ่มกดสไตล์ Premium Navy Button */
     div.stButton > button {
-        background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
-        color: white !important;
-        border: none;
-        border-radius: 8px;
-        padding: 0.5rem 1.2rem;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+        background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%) !important;
+        color: #ffffff !important;
+        border: 1px solid #3b82f6 !important;
+        border-radius: 8px !important;
+        padding: 0.5rem 1.2rem !important;
+        font-weight: 500 !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
     }
 
     div.stButton > button:hover {
-        background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
-        box-shadow: 0 6px 12px -1px rgba(37, 99, 235, 0.4);
-        transform: translateY(-1px);
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+        box-shadow: 0 6px 16px rgba(37, 99, 235, 0.5) !important;
+        transform: translateY(-1px) !important;
     }
 
     /* หัวข้อข่าว/ข้อความหลัก */
     h1, h2, h3 {
-        color: #0f172a !important;
+        color: #f8fafc !important;
         font-weight: 600 !important;
     }
 
     /* ตกแต่ง Metric Card */
     [data-testid="stMetric"] {
-        background-color: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 1rem;
-        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+        background: linear-gradient(135deg, #1e293b 0%, #0b1329 100%) !important;
+        border: 1px solid #1e3a8a !important;
+        border-radius: 12px !important;
+        padding: 1rem !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
     }
 
     [data-testid="stMetricValue"] {
-        color: #1e3a8a !important;
-        font-weight: 700;
+        color: #38bdf8 !important;
+        font-weight: 700 !important;
     }
 
-    /* ตกแต่งกรอบ Form */
+    [data-testid="stMetricLabel"] {
+        color: #94a3b8 !important;
+    }
+
+    /* ตกแต่งกรอบ Form และการ์ด Login ให้เป็นสีน้ำเงินกรมเข้มคุมโทน */
     [data-testid="stForm"] {
-        background-color: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+        background: linear-gradient(180deg, #1e293b 0%, #0b1329 100%) !important;
+        border: 1px solid #1e3a8a !important;
+        border-radius: 16px !important;
+        padding: 2.5rem !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    /* ปรับแต่ง Label และ Input ช่องกรอกข้อมูล */
+    .stTextInput label, .stSelectbox label, .stNumberInput label, .stDateInput label, .stTextArea label {
+        color: #e2e8f0 !important;
+    }
+
+    .stTextInput input, .stSelectbox select, .stNumberInput input, .stTextArea textarea {
+        background-color: #0b1329 !important;
+        color: #f8fafc !important;
+        border: 1px solid #1e3a8a !important;
+        border-radius: 8px !important;
+    }
+
+    .stTextInput input:focus, .stSelectbox select:focus, .stNumberInput input:focus {
+        border-color: #38bdf8 !important;
+        box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3) !important;
     }
 
     /* Header แท็บการทำงาน */
@@ -94,17 +116,26 @@ st.markdown("""
 
     .stTabs [data-baseweb="tab"] {
         height: 45px;
-        background-color: #e2e8f0;
-        border-radius: 8px;
-        padding-left: 16px;
-        padding-right: 16px;
-        color: #334155;
-        font-weight: 500;
+        background-color: #1e293b !important;
+        border-radius: 8px !important;
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        color: #94a3b8 !important;
+        font-weight: 500 !important;
+        border: 1px solid #334155 !important;
     }
 
     .stTabs [aria-selected="true"] {
-        background-color: #1e3a8a !important;
+        background-color: #2563eb !important;
         color: #ffffff !important;
+        border: 1px solid #60a5fa !important;
+    }
+
+    /* ปรับแต่ง Dataframe */
+    [data-testid="stDataFrame"] {
+        background-color: #1e293b !important;
+        border-radius: 12px !important;
+        border: 1px solid #334155 !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -136,21 +167,34 @@ if "username" not in st.session_state:
     st.session_state["username"] = ""
 
 def login_page():
+    # ซ่อน Sidebar เมื่อยังไม่ได้เข้าสู่ระบบ
+    st.markdown("""
+        <style>
+        [data-testid="stSidebar"] {
+            display: none !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
     st.markdown("<br/><br/>", unsafe_allow_html=True)
     col1, col2, col3 = st.columns([1, 1.8, 1])
     
     with col2:
         st.markdown("""
             <div style="text-align: center; margin-bottom: 25px;">
-                <h1 style="color: #0f172a; font-size: 32px; margin-bottom: 5px;">🚗 CAR RENTAL ERP</h1>
-                <p style="color: #64748b; font-size: 16px;">ระบบบริหารจัดการรถเช่าส่วนกลาง ระดับพรีเมียม</p>
+                <div style="background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); width: 75px; height: 75px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4); border: 2px solid #3b82f6;">
+                    <span style="font-size: 38px;">🚗</span>
+                </div>
+                <h1 style="color: #ffffff !important; font-size: 34px; margin-bottom: 5px; font-weight: 700; letter-spacing: 1px;">CAR RENTAL ERP</h1>
+                <p style="color: #94a3b8; font-size: 15px;">ระบบบริหารจัดการรถเช่าส่วนกลาง ระดับพรีเมียม</p>
             </div>
         """, unsafe_allow_html=True)
         
         with st.form("login_form"):
-            st.subheader("🔐 เข้าสู่ระบบ")
+            st.markdown("<h3 style='text-align: center; color: #38bdf8 !important; margin-bottom: 20px; font-weight: 600;'>🔐 เข้าสู่ระบบ</h3>", unsafe_allow_html=True)
             username = st.text_input("👤 ชื่อผู้ใช้งาน (Username)")
             password = st.text_input("🔑 รหัสผ่าน (Password)", type="password")
+            st.markdown("<br/>", unsafe_allow_html=True)
             submitted = st.form_submit_button("เข้าสู่ระบบ", use_container_width=True)
             
             if submitted:
@@ -676,6 +720,7 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
     col_chart1, col_chart2 = st.columns(2)
 
     # ปรับแต่งโทนสีกราฟเป็นโทน Navy/Blue คุมโทนพรีเมียม
+    plt.style.use('dark_background')
     plt.rcParams['font.sans-serif'] = 'Kanit'
     plt.rcParams['axes.unicode_minus'] = False
 
@@ -686,8 +731,11 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
             df_status.columns = ["Status", "Count"]
 
             fig, ax = plt.subplots(figsize=(5, 4))
-            colors_pie = ['#1e3a8a', '#2563eb', '#3b82f6', '#93c5fd', '#cbd5e1']
-            ax.pie(df_status["Count"], labels=df_status["Status"], autopct="%1.1f%%", startangle=90, colors=colors_pie)
+            fig.patch.set_facecolor('#0f172a')
+            ax.set_facecolor('#0f172a')
+
+            colors_pie = ['#1e3a8a', '#2563eb', '#38bdf8', '#93c5fd', '#cbd5e1']
+            ax.pie(df_status["Count"], labels=df_status["Status"], autopct="%1.1f%%", startangle=90, colors=colors_pie, textprops={'color':"w"})
             ax.axis("equal")
             st.pyplot(fig)
         else:
@@ -696,12 +744,16 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
     with col_chart2:
         st.subheader("📌 สรุปทางการเงิน")
         fig2, ax2 = plt.subplots(figsize=(5, 4))
+        fig2.patch.set_facecolor('#0f172a')
+        ax2.set_facecolor('#0f172a')
+
         categories = ["รายได้รวม", "ค่าใช้จ่าย", "กำไรสุทธิ"]
         values = [total_rev, total_exp, net_profit]
-        colors_bar = ["#1e3a8a", "#ef4444", "#0284c7"]
+        colors_bar = ["#2563eb", "#ef4444", "#38bdf8"]
 
         ax2.bar(categories, values, color=colors_bar)
-        ax2.set_ylabel("จำนวนเงิน (บาท)")
+        ax2.set_ylabel("จำนวนเงิน (บาท)", color="w")
+        ax2.tick_params(colors='w')
         st.pyplot(fig2)
 
 # ====================================================
@@ -775,18 +827,18 @@ elif module_choice == "📁 9. ศูนย์เอกสาร & PDF":
         st.markdown("### 📄 สัญญาเช่ารถยนต์ (Rental Agreement)")
         
         doc_html = f"""
-        <div style="border:2px solid #1e3a8a; padding:25px; background-color:#ffffff; color:#0f172a; font-family:'Kanit', sans-serif; border-radius:10px;">
-            <div style="text-align:center; border-bottom:2px solid #1e3a8a; padding-bottom:10px; margin-bottom:15px;">
-                <h2 style="color:#1e3a8a; margin:0;">เอกสารสัญญาเช่ารถยนต์</h2>
-                <p style="color:#64748b; margin:5px 0 0 0;">เลขที่สัญญา: <b style="color:#0f172a;">{doc['contract_no']}</b> | วันที่ทำสัญญา: {doc['created_at'][:10] if doc.get('created_at') else '-'}</p>
+        <div style="border:2px solid #2563eb; padding:25px; background-color:#0f172a; color:#f8fafc; font-family:'Kanit', sans-serif; border-radius:12px;">
+            <div style="text-align:center; border-bottom:2px solid #2563eb; padding-bottom:10px; margin-bottom:15px;">
+                <h2 style="color:#38bdf8; margin:0;">เอกสารสัญญาเช่ารถยนต์</h2>
+                <p style="color:#94a3b8; margin:5px 0 0 0;">เลขที่สัญญา: <b style="color:#f8fafc;">{doc['contract_no']}</b> | วันที่ทำสัญญา: {doc['created_at'][:10] if doc.get('created_at') else '-'}</p>
             </div>
             <p><b>ผู้เช่า:</b> คุณ{doc['customers']['name']} | <b>เบอร์โทรศัพท์:</b> {doc['customers']['phone']}</p>
             <p><b>เลขที่ใบขับขี่:</b> {doc['customers']['driver_license']} | <b>ที่อยู่:</b> {doc['customers']['address']}</p>
-            <hr style="border:0.5px solid #e2e8f0;"/>
+            <hr style="border:0.5px solid #334155;"/>
             <p><b>ข้อมูลรถยนต์ที่เช่า:</b> ทะเบียน {doc['cars']['license_plate']} ({doc['cars']['brand']} {doc['cars']['model']})</p>
             <p><b>ระยะเวลาเช่า:</b> ตั้งแต่วันที่ {doc['start_date']} ถึงวันที่ {doc['end_date']} (รวม {doc['days']} วัน)</p>
             <p><b>อัตราค่าเช่า:</b> {float(doc['rental_rate']):,.2f} บาท/วัน | <b>เงินมัดจำประกัน:</b> {float(doc['deposit']):,.2f} บาท</p>
-            <p><b>ยอดรวมค่าเช่าสุทธิ:</b> <span style="font-size:20px; font-weight:bold; color:#1e3a8a;">{float(doc['grand_total']):,.2f} บาท</span></p>
+            <p><b>ยอดรวมค่าเช่าสุทธิ:</b> <span style="font-size:20px; font-weight:bold; color:#38bdf8;">{float(doc['grand_total']):,.2f} บาท</span></p>
             <br/><br/>
             <table width="100%" style="text-align:center; margin-top:30px;">
                 <tr>

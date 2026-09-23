@@ -16,7 +16,7 @@ st.set_page_config(
 )
 
 # ----------------------------------------------------
-# Custom CSS: กรอบลอคอินกรมเข้มตัดฟ้า + ช่องกรอกสีขาวคมชัด
+# Custom CSS: โทนสีขาวคลีน + การ์ด Login สีกรมอ่อนนุ่มนวล
 # ----------------------------------------------------
 st.markdown("""
     <style>
@@ -26,7 +26,7 @@ st.markdown("""
         font-family: 'Kanit', sans-serif !important;
     }
 
-    /* พื้นหลังหลักของหน้าเว็บเป็นสีขาว Off-White อ่านสบายตา */
+    /* พื้นหลังหลักของหน้าเว็บเป็นสีขาว Off-White สบายตา */
     .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"], [data-testid="stMain"], .main {
         background-color: #f8fafc !important;
     }
@@ -34,14 +34,14 @@ st.markdown("""
     /* แถบ Sidebar สีน้ำเงินกรมเข้ม สไตล์ Executive */
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%) !important;
-        border-right: 2.5px solid #2563eb !important;
+        border-right: 2px solid #3b82f6 !important;
     }
 
     [data-testid="stSidebar"] * {
         color: #f8fafc !important;
     }
 
-    /* หัวข้อและข้อความหลัก สีน้ำเงินกรมเข้ม คมชัด */
+    /* หัวข้อและข้อความหลัก สีน้ำเงินกรม คมชัด */
     h1, h2, h3, h4, h5, h6 {
         color: #0f172a !important;
         font-weight: 600 !important;
@@ -50,10 +50,10 @@ st.markdown("""
     /* การ์ด Metric แบบสว่าง เรียบหรู */
     [data-testid="stMetric"] {
         background-color: #ffffff !important;
-        border: 1.5px solid #2563eb !important;
+        border: 1.5px solid #3b82f6 !important;
         border-radius: 12px !important;
         padding: 1.2rem !important;
-        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.08) !important;
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.08) !important;
     }
 
     [data-testid="stMetricValue"] {
@@ -65,52 +65,50 @@ st.markdown("""
         color: #475569 !important;
     }
 
-    /* กรอบฟอร์มทั้งหมด และการ์ด Login (โทนกรมเข้ม + กรอบสีฟ้าพรีเมียม) */
+    /* การ์ดฟอร์ม/Login ปรับสีน้ำเงินกรมให้อ่อนลงเล็กน้อย (Slate Navy) ดูนุ่มนวลขึ้น */
     [data-testid="stForm"] {
-        background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%) !important;
-        border: 2.5px solid #2563eb !important; /* กรอบสีฟ้าโดดเด่น */
+        background: linear-gradient(180deg, #1e293b 0%, #334155 100%) !important;
+        border: 2px solid #3b82f6 !important; /* ขอบสีฟ้าพรีเมียม */
         border-radius: 16px !important;
-        padding: 2.5rem !important;
-        box-shadow: 0 10px 30px rgba(37, 99, 235, 0.25) !important;
+        padding: 2.2rem !important;
+        box-shadow: 0 10px 25px rgba(30, 41, 59, 0.25) !important;
     }
 
-    /* ข้อความ Label หัวข้อช่องกรอกเป็นสีขาวสว่าง อ่านง่ายบนการ์ดกรมเข้ม */
+    /* หัวข้อ Label บนการ์ด Login เป็นสีขาวสว่าง */
     .stTextInput label, .stSelectbox label, .stNumberInput label, .stDateInput label, .stTextArea label {
         color: #ffffff !important;
         font-weight: 500 !important;
     }
 
-    /* ช่องกรอกข้อมูล (Inputs) และกล่องเลือก (Selectbox) พื้นหลังสีขาว + ตัวหนังสือสีดำ/กรมเข้ม */
+    /* ช่องกรอกข้อมูล (Inputs) และ Selectbox พื้นสีขาว ตัวหนังสือสีดำคมชัด */
     .stSelectbox div[data-baseweb="select"] {
         background-color: #ffffff !important;
-        border: 1.5px solid #3b82f6 !important;
+        border: 1.5px solid #60a5fa !important;
         border-radius: 8px !important;
     }
 
-    /* ตัวหนังสือภายในช่อง Selectbox เป็นสีดำคมชัด */
     .stSelectbox div[data-baseweb="select"] * {
         color: #0f172a !important;
         font-weight: 500 !important;
     }
 
-    /* ช่อง Input อื่นๆ (Text / Number / Date / Textarea) พื้นสีขาว */
     .stTextInput input, .stNumberInput input, .stDateInput input, .stTextArea textarea {
         background-color: #ffffff !important;
         color: #0f172a !important;
-        border: 1.5px solid #3b82f6 !important;
+        border: 1.5px solid #60a5fa !important;
         border-radius: 8px !important;
         font-weight: 500 !important;
     }
 
     .stTextInput input:focus, .stSelectbox select:focus, .stNumberInput input:focus {
         border-color: #2563eb !important;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3) !important;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25) !important;
     }
 
-    /* เมนูดรอปดาวน์ List ตอนคลิกเลือก */
+    /* เมนูดรอปดาวน์ Popup ตอนคลิกเลือก */
     div[data-baseweb="menu"] {
         background-color: #ffffff !important;
-        border: 1.5px solid #2563eb !important;
+        border: 1.5px solid #3b82f6 !important;
     }
 
     div[data-baseweb="menu"] * {
@@ -119,7 +117,7 @@ st.markdown("""
 
     /* ปุ่มกดสีฟ้าพรีเมียม */
     div.stButton > button {
-        background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%) !important;
+        background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%) !important;
         color: #ffffff !important;
         border: 1px solid #60a5fa !important;
         border-radius: 8px !important;
@@ -130,8 +128,8 @@ st.markdown("""
     }
 
     div.stButton > button:hover {
-        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-        box-shadow: 0 6px 18px rgba(37, 99, 235, 0.5) !important;
+        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%) !important;
+        box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45) !important;
         transform: translateY(-1px) !important;
     }
 
@@ -209,7 +207,7 @@ def login_page():
     with col2:
         st.markdown("""
             <div style="text-align: center; margin-bottom: 25px;">
-                <div style="background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); width: 75px; height: 75px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35); border: 2.5px solid #2563eb;">
+                <div style="background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%); width: 75px; height: 75px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35); border: 2.5px solid #60a5fa;">
                     <span style="font-size: 38px;">🚗</span>
                 </div>
                 <h1 style="color: #0f172a !important; font-size: 34px; margin-bottom: 5px; font-weight: 700; letter-spacing: 1px;">CAR RENTAL ERP</h1>
@@ -685,7 +683,7 @@ elif module_choice == "🔧 6. ค่าใช้จ่าย & ซ่อมบ�
             with st.form("exp_form", clear_on_submit=True):
                 e1, e2 = st.columns(2)
                 exp_type = e1.selectbox("ประเภทค่าใช้จ่าย", ["ค่าซ่อมบำรุง/ถ่ายน้ำมันเครื่อง", "ค่าน้ำมันเชื้อเพลิง", "ค่าประกันภัย/พ.ร.บ.", "ค่าล้างรถ/ทำความสะอาด", "อื่นๆ"])
-                title = e2.text_input("รายการ / รายละเอียด * (เช่น เช็กระยะ 50,000 กม.)")
+                title = e2.text_input("รายการ / รายรายละเอียด * (เช่น เช็กระยะ 50,000 กม.)")
 
                 e3, e4 = st.columns(2)
                 amount = e3.number_input("จำนวนเงิน (บาท) *", value=1500.0, step=100.0)
@@ -746,22 +744,31 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
     st.markdown("---")
     col_chart1, col_chart2 = st.columns(2)
 
+    # ปรับตั้งค่า Matplotlib ป้องกันอักษรสี่เหลี่ยมต่างดาวบนเซิร์ฟเวอร์ Cloud
     plt.style.use('default')
-    plt.rcParams['font.sans-serif'] = 'Kanit'
+    plt.rcParams['font.sans-serif'] = ['DejaVu Sans', 'Arial', 'sans-serif']
     plt.rcParams['axes.unicode_minus'] = False
+
+    status_map_en = {
+        "ว่าง": "Available",
+        "กำลังเช่า": "Rented",
+        "ซ่อมบำรุง": "Maintenance",
+        "ระงับใช้งาน": "Suspended"
+    }
 
     with col_chart1:
         st.subheader("📌 สัดส่วนสถานะรถยนต์")
         if cars_data:
             df_status = pd.DataFrame(cars_data)["status"].value_counts().reset_index()
             df_status.columns = ["Status", "Count"]
+            df_status["Status_EN"] = df_status["Status"].map(lambda x: status_map_en.get(x, x))
 
             fig, ax = plt.subplots(figsize=(5, 4))
             fig.patch.set_facecolor('#ffffff')
             ax.set_facecolor('#ffffff')
 
             colors_pie = ['#0f172a', '#1e3a8a', '#2563eb', '#3b82f6', '#94a3b8']
-            ax.pie(df_status["Count"], labels=df_status["Status"], autopct="%1.1f%%", startangle=90, colors=colors_pie, textprops={'color':"#0f172a"})
+            ax.pie(df_status["Count"], labels=df_status["Status_EN"], autopct="%1.1f%%", startangle=90, colors=colors_pie, textprops={'color':"#0f172a", 'fontsize':11})
             ax.axis("equal")
             st.pyplot(fig)
         else:
@@ -773,13 +780,13 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
         fig2.patch.set_facecolor('#ffffff')
         ax2.set_facecolor('#ffffff')
 
-        categories = ["รายได้รวม", "ค่าใช้จ่าย", "กำไรสุทธิ"]
+        categories = ["Revenue", "Expense", "Profit"]
         values = [total_rev, total_exp, net_profit]
         colors_bar = ["#1e3a8a", "#ef4444", "#2563eb"]
 
         ax2.bar(categories, values, color=colors_bar)
-        ax2.set_ylabel("จำนวนเงิน (บาท)", color="#0f172a")
-        ax2.tick_params(colors='#0f172a')
+        ax2.set_ylabel("Amount (THB)", color="#0f172a", fontsize=11)
+        ax2.tick_params(colors='#0f172a', labelsize=10)
         st.pyplot(fig2)
 
 # ====================================================

@@ -150,14 +150,19 @@ st.markdown("""
         box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2) !important;
     }
 
-    .stTextInput label, .stSelectbox label, .stNumberInput label, .stDateInput label, .stTextArea label {
-        color: #ffffff !important;
-        font-weight: 500 !important;
+    /* ปรับแต่ง Label ของ Input ในหน้าหลักให้เป็นสีดำเข้มอ่านง่าย */
+    .stMain .stTextInput label, 
+    .stMain .stSelectbox label, 
+    .stMain .stNumberInput label, 
+    .stMain .stDateInput label, 
+    .stMain .stTextArea label {
+        color: #0f172a !important;
+        font-weight: 600 !important;
     }
 
     .stSelectbox div[data-baseweb="select"] {
         background-color: #ffffff !important;
-        border: 1.5px solid #d4af37 !important;
+        border: 1.5px solid #cbd5e1 !important;
         border-radius: 8px !important;
     }
 
@@ -326,7 +331,8 @@ if module_choice == "🚙 1. จัดการข้อมูลรถ":
     tab1, tab2, tab3 = st.tabs(["📋 รายการรถทั้งหมด", "➕ เพิ่มรถยนต์ใหม่", "✏️ แก้ไข/ระงับใช้งานรถ"])
 
     with tab1:
-        status_filter = st.selectbox("กรองตามสถานะ", ["ทั้งหมด", "ว่าง", "กำลังเช่า", "ซ่อมบำรุง", "ระงับใช้งาน"])
+        # ปรับ Label เป็น "เลือกสถานะ" ตามคำขอครับ
+        status_filter = st.selectbox("เลือกสถานะ", ["ทั้งหมด", "ว่าง", "กำลังเช่า", "ซ่อมบำรุง", "ระงับใช้งาน"])
 
         res = supabase.table("cars").select("*").order("id", desc=False).execute()
         df_cars = pd.DataFrame(res.data) if res.data else pd.DataFrame()
@@ -759,7 +765,7 @@ elif module_choice == "🔧 6. ค่าใช้จ่าย & ซ่อมบ�
             st.info("ยังไม่มีข้อมูลค่าใช้จ่าย")
 
 # ====================================================
-# โมดูล 7: Executive Dashboard (แก้ไข Layout และ HTML Strings เรียบร้อย)
+# โมดูล 7: Executive Dashboard (แก้ไขภาษาอังกฤษป้องกันกรอบสี่เหลี่ยม [ท])
 # ====================================================
 elif module_choice == "📊 7. Dashboard & รายงาน":
     st.title("📊 7. Executive Dashboard & Financial Overview")
@@ -892,7 +898,9 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
                 wedgeprops=dict(width=0.35, edgecolor='w', linewidth=2))
 
         ax2.text(0, -0.1, f"{util_rate}%", ha='center', va='center', fontsize=26, fontweight='bold', color='#0f172a')
-        ax2.text(0, -0.35, "อัตราการถูกเช่าจริง", ha='center', va='center', fontsize=10, color='#64748b')
+        
+        # แก้ข้อความภาษาอังกฤษเพื่อแก้สี่เหลี่ยม [ท] สวยงามแบบตัวอย่าง
+        ax2.text(0, -0.38, "Rental Utilization Rate", ha='center', va='center', fontsize=9, color='#64748b', fontweight='500')
 
         ax2.axis('equal')
         for spine in ax2.spines.values():

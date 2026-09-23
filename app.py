@@ -45,7 +45,6 @@ st.markdown("""
     }
 
     /* 2. ปุ่มพับ/ขยาย Sidebar */
-    /* ตอนกางออก (อยู่ใน Sidebar พื้นน้ำเงิน): ปุ่มกลมกลืนกับ Sidebar ตัวดึงสีขาว */
     [data-testid="stSidebarCollapseButton"] button {
         background-color: #1e293b !important;
         border: 1px solid #d4af37 !important;
@@ -58,7 +57,6 @@ st.markdown("""
         stroke: #ffffff !important;
     }
 
-    /* ตอนพับเก็บ (ลอยอยู่บนพื้นขาว/นอก Sidebar): พื้นขาว ตัวดึงสีดำเข้ม */
     [data-testid="collapsedControl"] {
         background-color: #ffffff !important;
         border-radius: 8px !important;
@@ -83,12 +81,10 @@ st.markdown("""
         padding-top: 1rem;
     }
 
-    /* บังคับตัวอักษรและข้อความทั้งหมดใน Sidebar ให้เป็นสีขาวสว่าง */
     [data-testid="stSidebar"] * {
         color: #ffffff !important;
     }
 
-    /* ตกแต่งช่อง Search บน Sidebar */
     [data-testid="stSidebar"] div[data-baseweb="input"] {
         background-color: #1e293b !important;
         border: 1px solid #d4af37 !important;
@@ -100,7 +96,6 @@ st.markdown("""
         font-size: 14px !important;
     }
 
-    /* ตกแต่ง Radio Buttons ใน Sidebar */
     [data-testid="stSidebar"] div[role="radiogroup"] > label {
         background-color: transparent !important;
         border-radius: 10px !important;
@@ -173,7 +168,6 @@ st.markdown("""
         color: #64748b !important;
     }
 
-    /* Form สไตล์การ์ดเข้ม */
     [data-testid="stForm"] {
         background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%) !important;
         border: 1px solid #334155 !important;
@@ -183,7 +177,6 @@ st.markdown("""
         box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2) !important;
     }
 
-    /* ตัวอักษรและ Label ภายใน Form */
     [data-testid="stForm"] label,
     [data-testid="stForm"] label p,
     [data-testid="stForm"] label span {
@@ -191,7 +184,6 @@ st.markdown("""
         font-weight: 500 !important;
     }
 
-    /* ปุ่มใน Form / ปุ่มเข้าสู่ระบบ เมื่อเป็นพื้นหลังสีขาว ตัวอักษรจะเป็นสีดำเข้ม */
     [data-testid="stForm"] div.stButton > button,
     [data-testid="stFormSubmitButton"] > button,
     [data-testid="stForm"] button {
@@ -213,7 +205,6 @@ st.markdown("""
         border-color: #fef08a !important;
     }
 
-    /* ปรับแต่ง Label ของ Input ในหน้าหลัก (อยู่นอก Form) ให้เป็นสีดำเข้ม */
     .stMain div:not([data-testid="stForm"]) > .stTextInput label, 
     .stMain div:not([data-testid="stForm"]) > .stSelectbox label, 
     .stMain div:not([data-testid="stForm"]) > .stNumberInput label, 
@@ -306,7 +297,8 @@ def login_page():
     """, unsafe_allow_html=True)
 
     st.markdown("<br/><br/>", unsafe_allow_html=True)
-    col1, col2, col3 = st.columns()
+    # แก้ไขตรงนี้ใส่เลข 3 เป็นสัดส่วนคอลัมน์แล้ว
+    col1, col2, col3 = st.columns(3)
     
     with col2:
         st.markdown("""
@@ -357,7 +349,6 @@ st.sidebar.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# 🔍 ช่องค้นหาด่วน (Global Search Bar) บน Sidebar
 global_search = st.sidebar.text_input("Search", placeholder="ค้นหา", label_visibility="collapsed")
 st.sidebar.markdown("<div style='margin-bottom: 12px;'></div>", unsafe_allow_html=True)
 
@@ -847,7 +838,6 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
     net_profit = total_rev - total_exp
     profit_margin = ((net_profit / total_rev) * 100) if total_rev > 0 else 0.0
 
-    # 1. Main Balance Banner
     st.markdown(f"""
         <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 25px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); margin-bottom: 20px;">
             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
@@ -868,7 +858,6 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
         </div>
     """, unsafe_allow_html=True)
 
-    # Smooth Line Chart
     dates = pd.date_range(end=datetime.now(), periods=12, freq='ME').strftime('%b')
     rev_trend = [35000, 48000, 42000, 58000, 51000, 68000, 62000, 79000, 72000, 88000, 84000, max(95000.0, total_rev)]
     
@@ -899,8 +888,7 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
 
     st.markdown("<br/>", unsafe_allow_html=True)
 
-    # 2. Middle Row
-    col_mid1, col_mid2 = st.columns()
+    col_mid1, col_mid2 = st.columns(2)
 
     with col_mid1:
         st.markdown("""
@@ -942,29 +930,35 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
         
         st.markdown("""
             <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                    <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #0f172a;">สรุปยอดรายได้ / ค่าใช้จ่ายประจำเดือน ℹ️</h3>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                    <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 14px; padding: 16px;">
-                        <div style="font-size: 12px; color: #166534; font-weight: 600;">💰 รายได้รวม (Revenues)</div>
-                        <div style="font-size: 22px; font-weight: 800; color: #15803d; margin-top: 5px;">฿{total_rev:,.0f}</div>
-                    </div>
-                    <div style="background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 14px; padding: 16px;">
-                        <div style="font-size: 12px; color: #991b1b; font-weight: 600;">💸 ค่าใช้จ่ายรวม (Expenses)</div>
-                        <div style="font-size: 22px; font-weight: 800; color: #b91c1c; margin-top: 5px;">฿{total_exp:,.0f}</div>
-                    </div>
-                </div>
-                <div style="margin-top: 15px; background-color: #f8fafc; border-radius: 12px; padding: 12px; text-align: center; border: 1px dashed #cbd5e1;">
-                    <span style="font-size: 13px; color: #475569;">🚗 รถพร้อมใช้งาน: <b>{available_cars} คัน</b> | 🛠️ กำลังซ่อมบำรุง: <b>{maint_cars} คัน</b></span>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #0f172a;">Fleet Utilization Index ℹ️</h3>
+                    <span style="color: #2563eb; font-size: 13px; font-weight: 600;">See all ❯</span>
                 </div>
             </div>
         """, unsafe_allow_html=True)
 
+        fig2, ax2 = plt.subplots(figsize=(4, 2.2))
+        fig2.patch.set_facecolor('#ffffff')
+        ax2.set_facecolor('#ffffff')
+
+        colors = ['#ef4444', '#f97316', '#a855f7', '#22c55e']
+        values = [25, 25, 25, 25]
+
+        ax2.pie(values, colors=colors, startangle=180, counterclock=False, 
+                wedgeprops=dict(width=0.35, edgecolor='w', linewidth=2))
+
+        ax2.text(0, -0.1, f"{util_rate}%", ha='center', va='center', fontsize=26, fontweight='bold', color='#0f172a')
+        ax2.text(0, -0.38, "Rental Utilization Rate", ha='center', va='center', fontsize=9, color='#64748b', fontweight='500')
+
+        ax2.axis('equal')
+        for spine in ax2.spines.values():
+            spine.set_visible(False)
+        plt.tight_layout()
+        st.pyplot(fig2)
+
     st.markdown("<br/>", unsafe_allow_html=True)
 
-    # 3. Bottom Row
-    col_bot1, col_bot2 = st.columns()
+    col_bot1, col_bot2 = st.columns(2)
 
     with col_bot1:
         st.markdown("""
@@ -1001,35 +995,26 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
             st.info("ยังไม่มีประวัติการชำระเงิน")
 
     with col_bot2:
-        util_rate = int((rented_cars / total_cars * 100)) if total_cars > 0 else 0
-        
-        st.markdown("""
-            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 22px 22px 5px 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #0f172a;">Fleet Utilization Index ℹ️</h3>
-                    <span style="color: #2563eb; font-size: 13px; font-weight: 600;">See all ❯</span>
+        st.markdown(f"""
+            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #0f172a;">สรุปยอดรายได้ / ค่าใช้จ่ายประจำเดือน ℹ️</h3>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 14px; padding: 16px;">
+                        <div style="font-size: 12px; color: #166534; font-weight: 600;">💰 รายได้รวม (Revenues)</div>
+                        <div style="font-size: 22px; font-weight: 800; color: #15803d; margin-top: 5px;">฿{total_rev:,.0f}</div>
+                    </div>
+                    <div style="background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 14px; padding: 16px;">
+                        <div style="font-size: 12px; color: #991b1b; font-weight: 600;">💸 ค่าใช้จ่ายรวม (Expenses)</div>
+                        <div style="font-size: 22px; font-weight: 800; color: #b91c1c; margin-top: 5px;">฿{total_exp:,.0f}</div>
+                    </div>
+                </div>
+                <div style="margin-top: 15px; background-color: #f8fafc; border-radius: 12px; padding: 12px; text-align: center; border: 1px dashed #cbd5e1;">
+                    <span style="font-size: 13px; color: #475569;">🚗 รถพร้อมใช้งาน: <b>{available_cars} คัน</b> | 🛠️ กำลังซ่อมบำรุง: <b>{maint_cars} คัน</b></span>
                 </div>
             </div>
         """, unsafe_allow_html=True)
-
-        fig2, ax2 = plt.subplots(figsize=(4, 2.2))
-        fig2.patch.set_facecolor('#ffffff')
-        ax2.set_facecolor('#ffffff')
-
-        colors = ['#ef4444', '#f97316', '#a855f7', '#22c55e']
-        values = [25, 25, 25, 25]
-
-        ax2.pie(values, colors=colors, startangle=180, counterclock=False, 
-                wedgeprops=dict(width=0.35, edgecolor='w', linewidth=2))
-
-        ax2.text(0, -0.1, f"{util_rate}%", ha='center', va='center', fontsize=26, fontweight='bold', color='#0f172a')
-        ax2.text(0, -0.38, "Rental Utilization Rate", ha='center', va='center', fontsize=9, color='#64748b', fontweight='500')
-
-        ax2.axis('equal')
-        for spine in ax2.spines.values():
-            spine.set_visible(False)
-        plt.tight_layout()
-        st.pyplot(fig2)
 
 # ====================================================
 # โมดูล 8: ระบบแจ้งเตือน (Alerts System)
@@ -1105,7 +1090,7 @@ elif module_choice == "📁 9. ศูนย์เอกสาร & PDF":
         <div style="border:2.5px solid #d4af37; padding:25px; background-color:#ffffff; color:#0f172a; font-family:'Kanit', sans-serif; border-radius:12px; box-shadow:0 4px 15px rgba(212,175,55,0.15);">
             <div style="text-align:center; border-bottom:2px solid #d4af37; padding-bottom:10px; margin-bottom:15px;">
                 <h2 style="color:#0f172a; margin:0; font-weight:700;">เอกสารสัญญาเช่ารถยนต์</h2>
-                <p style="color:#64748b; margin:5px 0 0 0;">เลขที่สัญญา: <b style="color:#0f172a;">{doc['contract_no']}</b> | วันที่ทำสัญญา: {doc['created_at'][:10] if doc.get('created_at') else '-'}</p>
+                <p style="color:#64748b; margin:5px 0 0 0;">เลขที่สัญญา: <b style="color:#0f172a;">{doc['contract_no']}</b> | วันที่ทำสัญญา: {doc.get('created_at', '')[:10] if doc.get('created_at') else '-'}</p>
             </div>
             <p><b>ผู้เช่า:</b> คุณ{doc['customers']['name']} | <b>เบอร์โทรศัพท์:</b> {doc['customers']['phone']}</p>
             <p><b>เลขที่ใบขับขี่:</b> {doc['customers']['driver_license']} | <b>ที่อยู่:</b> {doc['customers']['address']}</p>

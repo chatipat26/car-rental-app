@@ -1,6 +1,7 @@
 import os
 from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import streamlit as st
 from supabase import create_client, Client
@@ -55,7 +56,7 @@ st.markdown("""
         color: #ffffff !important;
     }
 
-    /* ตกแต่งช่อง Search บน Sidebar สไตล์ Prody UI */
+    /* ตกแต่งช่อง Search บน Sidebar */
     [data-testid="stSidebar"] div[data-baseweb="input"] {
         background-color: #1e293b !important;
         border: 1px solid #d4af37 !important;
@@ -758,116 +759,205 @@ elif module_choice == "🔧 6. ค่าใช้จ่าย & ซ่อมบ�
             st.info("ยังไม่มีข้อมูลค่าใช้จ่าย")
 
 # ====================================================
-# โมดูล 7: Dashboard & รายงาน
+# โมดูล 7: Executive Dashboard (ถอดแบบ Fintech UI)
 # ====================================================
 elif module_choice == "📊 7. Dashboard & รายงาน":
-    st.title("📊 7. Executive Dashboard & Financial Budget")
+    st.title("📊 7. Executive Dashboard & Financial Overview")
 
-    cars_data = supabase.table("cars").select("status").execute().data or []
-    contracts_data = supabase.table("contracts").select("grand_total, amount_paid, created_at").execute().data or []
-    expenses_data = supabase.table("expenses").select("amount, exp_date").execute().data or []
+    cars_data = supabase.table("cars").select("*").execute().data or []
+    contracts_data = supabase.table("contracts").select("grand_total, amount_paid, created_at, status").execute().data or []
+    expenses_data = supabase.table("expenses").select("amount, exp_date, title").execute().data or []
+    payments_data = supabase.table("payments").select("*, contracts(contract_no)").order("id", desc=True).limit(5).execute().data or []
 
     total_cars = len(cars_data)
     rented_cars = sum(1 for c in cars_data if c.get("status") == "กำลังเช่า")
     available_cars = sum(1 for c in cars_data if c.get("status") == "ว่าง")
+    maint_cars = sum(1 for c in cars_data if c.get("status") == "ซ่อมบำรุง")
 
     total_rev = sum(float(c.get("amount_paid") or 0) for c in contracts_data)
     total_exp = sum(float(e.get("amount") or 0) for e in expenses_data)
     net_profit = total_rev - total_exp
+    profit_margin = ((net_profit / total_rev) * 100) if total_rev > 0 else 0.0
 
-    m1, m2, m3, m4 = st.columns(4)
-    m1.metric("🚗 จำนวนรถทั้งหมด", f"{total_cars} คัน", f"ว่าง: {available_cars} คัน")
-    m2.metric("🔑 กำลังถูกเช่า", f"{rented_cars} คัน", f"คิดเป็น {((rented_cars/total_cars)*100 if total_cars else 0):.1f}%")
-    m3.metric("💰 รายได้รวม (Revenues)", f"{total_rev:,.2f} ฿")
-    m4.metric("📈 กำไรสุทธิ (Net Profit)", f"{net_profit:,.2f} ฿", delta=f"-ค่าใช้จ่าย {total_exp:,.2f} ฿")
+    # 1. Main Balance Banner
+    st.markdown(f"""
+        <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 25px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                    <span style="color: #64748b; font-size: 15px; font-weight: 500;">Net Profit Balance ❯</span>
+                    <div style="display: flex; align-items: baseline; gap: 8px; margin-top: 5px;">
+                        <span style="font-size: 42px; font-weight: 800; color: #0f172a;">฿{net_profit:,.0f}</span>
+                        <span style="font-size: 26px; font-weight: 600; color: #94a3b8;">.{(net_profit % 1) * 100:02.0f}</span>
+                        <span style="background-color: #dcfce7; color: #166534; font-size: 13px; font-weight: 700; padding: 4px 10px; border-radius: 20px; margin-left: 10px;">
+                            ▲ {profit_margin:.1f}%
+                        </span>
+                    </div>
+                </div>
+                <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 4px 12px; font-size: 13px; color: #475569; font-weight: 500;">
+                    All time ▾
+                </div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # Smooth Line Chart (Pandas freq='ME' & Smooth Curve)
+    dates = pd.date_range(end=datetime.now(), periods=12, freq='ME').strftime('%b')
+    rev_trend = [35000, 48000, 42000, 58000, 51000, 68000, 62000, 79000, 72000, 88000, 84000, max(95000.0, total_rev)]
+    
+    fig1, ax1 = plt.subplots(figsize=(12, 2.2))
+    fig1.patch.set_facecolor('#ffffff')
+    ax1.set_facecolor('#ffffff')
+
+    x = np.arange(len(dates))
+    x_smooth = np.linspace(x.min(), x.max(), 200)
+    
+    try:
+        from scipy.interpolate import make_interp_spline
+        spl = make_interp_spline(x, rev_trend, k=3)
+        y_smooth = spl(x_smooth)
+    except Exception:
+        y_smooth = np.interp(x_smooth, x, rev_trend)
+
+    ax1.plot(x_smooth, y_smooth, color='#2563eb', linewidth=2.5)
+    ax1.scatter(x[-2], rev_trend[-2], color='#2563eb', s=40, zorder=5)
+    
+    for spine in ax1.spines.values():
+        spine.set_visible(False)
+    ax1.get_yaxis().set_visible(False)
+    ax1.tick_params(colors='#94a3b8', labelsize=10)
+    plt.xticks(x, dates)
+    plt.tight_layout()
+    st.pyplot(fig1)
 
     st.markdown("<br/>", unsafe_allow_html=True)
 
-    col_dash1, col_dash2 = st.columns([1.6, 1])
+    # 2. Middle Row
+    col_mid1, col_mid2 = st.columns([1, 1])
 
-    with col_dash1:
+    with col_mid1:
         st.markdown("""
-            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-top: 4px solid #d4af37; border-radius: 16px; padding: 20px 22px; box-shadow: 0 4px 25px rgba(15, 23, 42, 0.05); margin-bottom: 25px;">
-                <h3 style="margin: 0; font-size: 18px; color: #0f172a; font-weight: 700;">Consolidated Budget Overview</h3>
-                <p style="margin: 3px 0 10px 0; color: #64748b; font-size: 13px;">
-                    <span style="color: #2563eb; font-weight: 600;">— Revenues</span> &nbsp;&nbsp;&nbsp; 
-                    <span style="color: #ef4444; font-weight: 600;">— Expenditures</span>
-                </p>
+            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); min-height: 320px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #0f172a;">สรุปสถานะรายคัน (Top Vehicles) ℹ️</h3>
+                    <span style="color: #2563eb; font-size: 13px; font-weight: 600; cursor: pointer;">See all ❯</span>
+                </div>
         """, unsafe_allow_html=True)
 
-        dates = pd.date_range(end=datetime.now(), periods=12, freq='ME').strftime('%b %Y')
-        rev_trend = [45000, 52000, 48000, 61000, 58000, 72000, 68000, 85000, 79000, 92000, 88000, max(100000.0, total_rev)]
-        exp_trend = [15000, 18000, 12000, 25000, 20000, 31000, 22000, 28000, 24000, 35000, 29000, max(20000.0, total_exp)]
+        for car in cars_data[:3]:
+            plate = car.get("license_plate", "-")
+            brand = f"{car.get('brand', '')} {car.get('model', '')}"
+            price = float(car.get("price_per_day") or 0)
+            status_color = "#16a34a" if car.get("status") == "ว่าง" else "#2563eb" if car.get("status") == "กำลังเช่า" else "#dc2626"
+            
+            st.markdown(f"""
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f1f5f9;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;">🚗</div>
+                        <div>
+                            <div style="font-weight: 700; color: #0f172a; font-size: 14px;">{plate}</div>
+                            <div style="color: #94a3b8; font-size: 12px;">{brand}</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-weight: 700; color: #0f172a; font-size: 14px;">฿{price:,.0f} <span style='font-size:10px; color:#94a3b8;'>/วัน</span></div>
+                        <div style="color: {status_color}; font-size: 12px; font-weight: 600;">● {car.get('status')}</div>
+                    </div>
+                </div>
+            """, unsafe_allow_html=True)
 
-        plt.style.use('default')
-        plt.rcParams['font.sans-serif'] = ['DejaVu Sans', 'Arial', 'sans-serif']
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    with col_mid2:
+        util_rate = int((rented_cars / total_cars * 100)) if total_cars > 0 else 0
         
-        fig1, ax1 = plt.subplots(figsize=(7, 3.6))
-        fig1.patch.set_facecolor('#ffffff')
-        ax1.set_facecolor('#ffffff')
-
-        ax1.plot(dates, rev_trend, color='#2563eb', linewidth=2.5, marker='o', markersize=4, label='Revenues')
-        ax1.fill_between(dates, rev_trend, color='#2563eb', alpha=0.08)
-
-        ax1.plot(dates, exp_trend, color='#ef4444', linewidth=2.5, marker='o', markersize=4, label='Expenditures')
-        ax1.fill_between(dates, exp_trend, color='#ef4444', alpha=0.08)
-
-        ax1.grid(True, linestyle='--', alpha=0.3, color='#cbd5e1')
-        ax1.spines['top'].set_visible(False)
-        ax1.spines['right'].set_visible(False)
-        ax1.spines['left'].set_color('#e2e8f0')
-        ax1.spines['bottom'].set_color('#e2e8f0')
-
-        ax1.tick_params(colors='#64748b', labelsize=8)
-        plt.xticks(rotation=25)
-        plt.tight_layout()
-
-        st.pyplot(fig1)
-        st.markdown("</div>", unsafe_allow_html=True)
-
-    with col_dash2:
-        st.markdown("""
-            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-top: 4px solid #d4af37; border-radius: 16px; padding: 20px 22px; box-shadow: 0 4px 25px rgba(15, 23, 42, 0.05); margin-bottom: 25px;">
-                <h3 style="margin: 0 0 10px 0; font-size: 18px; color: #0f172a; font-weight: 700;">📌 สัดส่วนสถานะรถยนต์</h3>
+        st.markdown(f"""
+            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); min-height: 320px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                    <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #0f172a;">Fleet Utilization Index ℹ️</h3>
+                    <span style="color: #2563eb; font-size: 13px; font-weight: 600; cursor: pointer;">See all ❯</span>
+                </div>
         """, unsafe_allow_html=True)
 
-        status_map_en = {
-            "ว่าง": "Available",
-            "กำลังเช่า": "Rented",
-            "ซ่อมบำรุง": "Maintenance",
-            "ระงับใช้งาน": "Suspended"
-        }
+        fig2, ax2 = plt.subplots(figsize=(4, 2.2))
+        fig2.patch.set_facecolor('#ffffff')
+        ax2.set_facecolor('#ffffff')
 
-        if cars_data:
-            df_status = pd.DataFrame(cars_data)["status"].value_counts().reset_index()
-            df_status.columns = ["Status", "Count"]
-            df_status["Status_EN"] = df_status["Status"].map(lambda x: status_map_en.get(x, x))
+        colors = ['#ef4444', '#f97316', '#a855f7', '#22c55e']
+        values = [25, 25, 25, 25]
 
-            fig2, ax2 = plt.subplots(figsize=(4.5, 3.6))
-            fig2.patch.set_facecolor('#ffffff')
-            ax2.set_facecolor('#ffffff')
+        ax2.pie(values, colors=colors, startangle=180, counterclock=False, 
+                wedgeprops=dict(width=0.35, edgecolor='w', linewidth=2))
 
-            colors_pie = ['#0f172a', '#1e3a8a', '#2563eb', '#f59e0b', '#94a3b8']
-            
-            wedges, texts, autotexts = ax2.pie(
-                df_status["Count"], 
-                labels=df_status["Status_EN"], 
-                autopct="%1.1f%%", 
-                startangle=90, 
-                colors=colors_pie[:len(df_status)],
-                pctdistance=0.75,
-                textprops={'color':"#0f172a", 'fontsize':9, 'weight':'bold'}
-            )
-            
-            centre_circle = plt.Circle((0,0),0.50,fc='white')
-            ax2.add_artist(centre_circle)
-            ax2.axis("equal")
-            plt.tight_layout()
-            st.pyplot(fig2)
-        else:
-            st.info("ยังไม่มีข้อมูลรถยนต์")
+        ax2.text(0, -0.15, f"{util_rate}%", ha='center', va='center', fontsize=28, fontweight='bold', color='#0f172a')
+        ax2.text(0, -0.42, "อัตราการถูกเช่าจริง", ha='center', va='center', fontsize=11, color='#64748b')
+
+        ax2.axis('equal')
+        plt.tight_layout()
+        st.pyplot(fig2)
 
         st.markdown("</div>", unsafe_allow_html=True)
+
+    st.markdown("<br/>", unsafe_allow_html=True)
+
+    # 3. Bottom Row
+    col_bot1, col_bot2 = st.columns([1, 1])
+
+    with col_bot1:
+        st.markdown("""
+            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); min-height: 280px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #0f172a;">รายการธุรกรรมล่าสุด (Recent Activities) ℹ️</h3>
+                    <span style="color: #2563eb; font-size: 13px; font-weight: 600; cursor: pointer;">See all ❯</span>
+                </div>
+        """, unsafe_allow_html=True)
+
+        if payments_data:
+            for pay in payments_data[:3]:
+                rec_no = pay.get("receipt_no", "REC-000")
+                amount = float(pay.get("amount") or 0)
+                pay_type = pay.get("pay_type", "ค่าเช่ารถ")
+                
+                st.markdown(f"""
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f1f5f9;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="background-color: #eff6ff; color: #2563eb; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: bold;">↗</div>
+                            <div>
+                                <div style="font-weight: 700; color: #0f172a; font-size: 13px;">{rec_no}</div>
+                                <div style="color: #16a34a; font-size: 11px; font-weight: 600;">● ชำระสำเร็จ (Completed)</div>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-weight: 700; color: #0f172a; font-size: 14px;">+{amount:,.2f} ฿</div>
+                            <div style="color: #94a3b8; font-size: 11px;">{pay_type}</div>
+                        </div>
+                    </div>
+                """, unsafe_allow_html=True)
+        else:
+            st.info("ยังไม่มีประวัติการชำระเงิน")
+
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    with col_bot2:
+        st.markdown("""
+            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); min-height: 280px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #0f172a;">สรุปยอดรายได้ / ค่าใช้จ่ายประจำเดือน ℹ️</h3>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 14px; padding: 16px;">
+                        <div style="font-size: 12px; color: #166534; font-weight: 600;">💰 รายได้รวม (Revenues)</div>
+                        <div style="font-size: 22px; font-weight: 800; color: #15803d; margin-top: 5px;">฿{total_rev:,.0f}</div>
+                    </div>
+                    <div style="background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 14px; padding: 16px;">
+                        <div style="font-size: 12px; color: #991b1b; font-weight: 600;">💸 ค่าใช้จ่ายรวม (Expenses)</div>
+                        <div style="font-size: 22px; font-weight: 800; color: #b91c1c; margin-top: 5px;">฿{total_exp:,.0f}</div>
+                    </div>
+                </div>
+                <div style="margin-top: 15px; background-color: #f8fafc; border-radius: 12px; padding: 12px; text-align: center; border: 1px dashed #cbd5e1;">
+                    <span style="font-size: 13px; color: #475569;">🚗 รถพร้อมใช้งาน: <b>{available_cars} คัน</b> | 🛠️ กำลังซ่อมบำรุง: <b>{maint_cars} คัน</b></span>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
 
 # ====================================================
 # โมดูล 8: ระบบแจ้งเตือน (Alerts System)

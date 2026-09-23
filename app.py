@@ -151,14 +151,34 @@ st.markdown("""
         box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2) !important;
     }
 
-    /* บังคับตัวอักษรและ Label ภายใน Form ทั้งหมด (รวมหน้า Login) ให้เป็นสีขาวสว่าง */
+    /* ตัวอักษรและ Label ภายใน Form */
     [data-testid="stForm"] label,
     [data-testid="stForm"] label p,
-    [data-testid="stForm"] label span,
-    [data-testid="stForm"] p,
-    [data-testid="stForm"] span {
+    [data-testid="stForm"] label span {
         color: #ffffff !important;
         font-weight: 500 !important;
+    }
+
+    /* ปุ่มใน Form / ปุ่มเข้าสู่ระบบ เมื่อเป็นพื้นหลังสีขาว ตัวอักษรจะเป็นสีดำเข้ม */
+    [data-testid="stForm"] div.stButton > button,
+    [data-testid="stFormSubmitButton"] > button,
+    [data-testid="stForm"] button {
+        background: #ffffff !important;
+        border: 1.5px solid #d4af37 !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    [data-testid="stForm"] div.stButton > button *,
+    [data-testid="stFormSubmitButton"] > button *,
+    [data-testid="stForm"] button * {
+        color: #0f172a !important;
+        font-weight: 700 !important;
+    }
+
+    [data-testid="stForm"] div.stButton > button:hover,
+    [data-testid="stFormSubmitButton"] > button:hover {
+        background: #f8fafc !important;
+        border-color: #fef08a !important;
     }
 
     /* ปรับแต่ง Label ของ Input ในหน้าหลัก (อยู่นอก Form) ให้เป็นสีดำเข้ม */

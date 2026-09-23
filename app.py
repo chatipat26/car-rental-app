@@ -16,7 +16,7 @@ st.set_page_config(
 )
 
 # ----------------------------------------------------
-# Custom CSS: Modern SaaS Sidebar + Luxury Navy & Gold Trim
+# Custom CSS: Sidebar ตัวอักษรสีขาวสว่าง + Luxury Navy & Gold Trim
 # ----------------------------------------------------
 st.markdown("""
     <style>
@@ -38,7 +38,7 @@ st.markdown("""
         z-index: 999999;
     }
 
-    /* พื้นหลังหลัก Off-White สบายตา สไตล์ Modern SaaS Chart */
+    /* พื้นหลังหลัก Off-White สบายตา */
     .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"], [data-testid="stMain"], .main {
         background-color: #f1f5f9 !important;
     }
@@ -50,10 +50,14 @@ st.markdown("""
         padding-top: 1rem;
     }
 
-    /* ตกแต่ง Radio Buttons ใน Sidebar ให้เหมือนแท็บเมนู Prody */
+    /* บังคับตัวอักษรและข้อความทั้งหมดใน Sidebar ให้เป็นสีขาวสว่าง */
+    [data-testid="stSidebar"] * {
+        color: #ffffff !important;
+    }
+
+    /* ตกแต่ง Radio Buttons ใน Sidebar (บังคับตัวหนังสือสีขาวชัดเจน) */
     [data-testid="stSidebar"] div[role="radiogroup"] > label {
         background-color: transparent !important;
-        color: #94a3b8 !important;
         border-radius: 10px !important;
         padding: 0.6rem 1rem !important;
         margin-bottom: 4px !important;
@@ -62,20 +66,33 @@ st.markdown("""
         border: 1px solid transparent !important;
     }
 
+    /* บังคับ Span/Div ภายใน Label ใน Sidebar ให้เป็นสีขาวสดใส */
+    [data-testid="stSidebar"] div[role="radiogroup"] > label p,
+    [data-testid="stSidebar"] div[role="radiogroup"] > label span {
+        color: #ffffff !important;
+        font-size: 15px !important;
+    }
+
     /* เมื่อ Hover เมนู Sidebar */
     [data-testid="stSidebar"] div[role="radiogroup"] > label:hover {
         background-color: #1e293b !important;
-        color: #f8fafc !important;
+        border-color: #475569 !important;
     }
 
-    /* เมื่อ Active เลือกเมนูSidebar */
+    /* เมื่อ Active เลือกเมนู Sidebar (เน้นสีทองเหลืองสว่าง) */
     [data-testid="stSidebar"] div[role="radiogroup"] > label[data-checked="true"],
     [data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) {
         background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
-        color: #fef08a !important;
         border: 1px solid #d4af37 !important;
         font-weight: 600 !important;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    [data-testid="stSidebar"] div[role="radiogroup"] > label[data-checked="true"] p,
+    [data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) p,
+    [data-testid="stSidebar"] div[role="radiogroup"] > label[data-checked="true"] span,
+    [data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) span {
+        color: #fef08a !important; /* สีทองสว่างเมื่อเลือก */
     }
 
     /* 3. แถบหัวข้อโมดูล (Module Header Banner) */
@@ -116,7 +133,7 @@ st.markdown("""
         color: #64748b !important;
     }
 
-    /* การ์ดฟอร์ม/Login สีน้ำเงินกรม ตัดขอบขอบสีทอง */
+    /* การ์ดฟอร์ม/Login สีน้ำเงินกรม ตัดขอบสีทอง */
     [data-testid="stForm"] {
         background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%) !important;
         border: 1px solid #334155 !important;
@@ -708,7 +725,7 @@ elif module_choice == "🔧 6. ค่าใช้จ่าย & ซ่อมบ�
             with st.form("exp_form", clear_on_submit=True):
                 e1, e2 = st.columns(2)
                 exp_type = e1.selectbox("ประเภทค่าใช้จ่าย", ["ค่าซ่อมบำรุง/ถ่ายน้ำมันเครื่อง", "ค่าน้ำมันเชื้อเพลิง", "ค่าประกันภัย/พ.ร.บ.", "ค่าล้างรถ/ทำความสะอาด", "อื่นๆ"])
-                title = e2.text_input("รายการ / รายละเอียด * (เช่น เช็กระยะ 50,000 กม.)")
+                title = e2.text_input("รายการ / รายรายละเอียด * (เช่น เช็กระยะ 50,000 กม.)")
 
                 e3, e4 = st.columns(2)
                 amount = e3.number_input("จำนวนเงิน (บาท) *", value=1500.0, step=100.0)
@@ -743,7 +760,7 @@ elif module_choice == "🔧 6. ค่าใช้จ่าย & ซ่อมบ�
             st.info("ยังไม่มีข้อมูลค่าใช้จ่าย")
 
 # ====================================================
-# โมดูล 7: Dashboard & รายงาน (ถอดแบบเรฟเฟอเรนซ์ภาพที่ 2)
+# โมดูล 7: Dashboard & รายงาน (แก้ไข freq='ME' ป้องกัน ValueError)
 # ====================================================
 elif module_choice == "📊 7. Dashboard & รายงาน":
     st.title("📊 7. Executive Dashboard & Financial Budget")
@@ -768,9 +785,7 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
 
     st.markdown("<br/>", unsafe_allow_html=True)
 
-    # ----------------------------------------------------
-    # Consolidated Budget Line Chart (อิงตามเรฟเฟอเรนซ์ภาพที่ 2)
-    # ----------------------------------------------------
+    # Consolidated Budget Line Chart (แก้ไขใช้ freq='ME' สำหรับ Pandas 2.2+)
     st.markdown("""
         <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-top: 4px solid #d4af37; border-radius: 16px; padding: 20px 25px; box-shadow: 0 4px 25px rgba(15, 23, 42, 0.05); margin-bottom: 25px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
@@ -784,8 +799,8 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
             </div>
     """, unsafe_allow_html=True)
 
-    # จำลองข้อมูลอนุกรมเวลาเพื่อสร้างกราฟสวยงามตามเรฟเฟอเรนซ์
-    dates = pd.date_range(end=datetime.now(), periods=12, freq='M').strftime('%b %Y')
+    # ใช้ freq='ME' ป้องกัน ValueError บน Pandas เวอร์ชันใหม่
+    dates = pd.date_range(end=datetime.now(), periods=12, freq='ME').strftime('%b %Y')
     rev_trend = [45000, 52000, 48000, 61000, 58000, 72000, 68000, 85000, 79000, 92000, 88000, max(100000.0, total_rev)]
     exp_trend = [15000, 18000, 12000, 25000, 20000, 31000, 22000, 28000, 24000, 35000, 29000, max(20000.0, total_exp)]
 
@@ -796,15 +811,12 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
     fig.patch.set_facecolor('#ffffff')
     ax.set_facecolor('#ffffff')
 
-    # วาดเส้น Revenues (สีน้ำเงิน) และ Fill Area
     ax.plot(dates, rev_trend, color='#2563eb', linewidth=2.5, marker='o', markersize=5, label='Revenues')
     ax.fill_between(dates, rev_trend, color='#2563eb', alpha=0.08)
 
-    # วาดเส้น Expenditures (สีแดง) และ Fill Area
     ax.plot(dates, exp_trend, color='#ef4444', linewidth=2.5, marker='o', markersize=5, label='Expenditures')
     ax.fill_between(dates, exp_trend, color='#ef4444', alpha=0.08)
 
-    # ปรับแต่ง Grid เส้นประจางๆ และแกนกราฟ
     ax.grid(True, linestyle='--', alpha=0.3, color='#cbd5e1')
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)

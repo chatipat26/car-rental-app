@@ -941,32 +941,25 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
         util_rate = int((rented_cars / total_cars * 100)) if total_cars > 0 else 0
         
         st.markdown("""
-            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 22px 22px 5px 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #0f172a;">Fleet Utilization Index ℹ️</h3>
-                    <span style="color: #2563eb; font-size: 13px; font-weight: 600;">See all ❯</span>
+            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #0f172a;">สรุปยอดรายได้ / ค่าใช้จ่ายประจำเดือน ℹ️</h3>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 14px; padding: 16px;">
+                        <div style="font-size: 12px; color: #166534; font-weight: 600;">💰 รายได้รวม (Revenues)</div>
+                        <div style="font-size: 22px; font-weight: 800; color: #15803d; margin-top: 5px;">฿{total_rev:,.0f}</div>
+                    </div>
+                    <div style="background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 14px; padding: 16px;">
+                        <div style="font-size: 12px; color: #991b1b; font-weight: 600;">💸 ค่าใช้จ่ายรวม (Expenses)</div>
+                        <div style="font-size: 22px; font-weight: 800; color: #b91c1c; margin-top: 5px;">฿{total_exp:,.0f}</div>
+                    </div>
+                </div>
+                <div style="margin-top: 15px; background-color: #f8fafc; border-radius: 12px; padding: 12px; text-align: center; border: 1px dashed #cbd5e1;">
+                    <span style="font-size: 13px; color: #475569;">🚗 รถพร้อมใช้งาน: <b>{available_cars} คัน</b> | 🛠️ กำลังซ่อมบำรุง: <b>{maint_cars} คัน</b></span>
                 </div>
             </div>
         """, unsafe_allow_html=True)
-
-        fig2, ax2 = plt.subplots(figsize=(4, 2.2))
-        fig2.patch.set_facecolor('#ffffff')
-        ax2.set_facecolor('#ffffff')
-
-        colors = ['#ef4444', '#f97316', '#a855f7', '#22c55e']
-        values = [25, 25, 25, 25]
-
-        ax2.pie(values, colors=colors, startangle=180, counterclock=False, 
-                wedgeprops=dict(width=0.35, edgecolor='w', linewidth=2))
-
-        ax2.text(0, -0.1, f"{util_rate}%", ha='center', va='center', fontsize=26, fontweight='bold', color='#0f172a')
-        ax2.text(0, -0.38, "Rental Utilization Rate", ha='center', va='center', fontsize=9, color='#64748b', fontweight='500')
-
-        ax2.axis('equal')
-        for spine in ax2.spines.values():
-            spine.set_visible(False)
-        plt.tight_layout()
-        st.pyplot(fig2)
 
     st.markdown("<br/>", unsafe_allow_html=True)
 
@@ -1008,26 +1001,35 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
             st.info("ยังไม่มีประวัติการชำระเงิน")
 
     with col_bot2:
-        st.markdown(f"""
-            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                    <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #0f172a;">สรุปยอดรายได้ / ค่าใช้จ่ายประจำเดือน ℹ️</h3>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                    <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 14px; padding: 16px;">
-                        <div style="font-size: 12px; color: #166534; font-weight: 600;">💰 รายได้รวม (Revenues)</div>
-                        <div style="font-size: 22px; font-weight: 800; color: #15803d; margin-top: 5px;">฿{total_rev:,.0f}</div>
-                    </div>
-                    <div style="background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 14px; padding: 16px;">
-                        <div style="font-size: 12px; color: #991b1b; font-weight: 600;">💸 ค่าใช้จ่ายรวม (Expenses)</div>
-                        <div style="font-size: 22px; font-weight: 800; color: #b91c1c; margin-top: 5px;">฿{total_exp:,.0f}</div>
-                    </div>
-                </div>
-                <div style="margin-top: 15px; background-color: #f8fafc; border-radius: 12px; padding: 12px; text-align: center; border: 1px dashed #cbd5e1;">
-                    <span style="font-size: 13px; color: #475569;">🚗 รถพร้อมใช้งาน: <b>{available_cars} คัน</b> | 🛠️ กำลังซ่อมบำรุง: <b>{maint_cars} คัน</b></span>
+        util_rate = int((rented_cars / total_cars * 100)) if total_cars > 0 else 0
+        
+        st.markdown("""
+            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 22px 22px 5px 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #0f172a;">Fleet Utilization Index ℹ️</h3>
+                    <span style="color: #2563eb; font-size: 13px; font-weight: 600;">See all ❯</span>
                 </div>
             </div>
         """, unsafe_allow_html=True)
+
+        fig2, ax2 = plt.subplots(figsize=(4, 2.2))
+        fig2.patch.set_facecolor('#ffffff')
+        ax2.set_facecolor('#ffffff')
+
+        colors = ['#ef4444', '#f97316', '#a855f7', '#22c55e']
+        values = [25, 25, 25, 25]
+
+        ax2.pie(values, colors=colors, startangle=180, counterclock=False, 
+                wedgeprops=dict(width=0.35, edgecolor='w', linewidth=2))
+
+        ax2.text(0, -0.1, f"{util_rate}%", ha='center', va='center', fontsize=26, fontweight='bold', color='#0f172a')
+        ax2.text(0, -0.38, "Rental Utilization Rate", ha='center', va='center', fontsize=9, color='#64748b', fontweight='500')
+
+        ax2.axis('equal')
+        for spine in ax2.spines.values():
+            spine.set_visible(False)
+        plt.tight_layout()
+        st.pyplot(fig2)
 
 # ====================================================
 # โมดูล 8: ระบบแจ้งเตือน (Alerts System)

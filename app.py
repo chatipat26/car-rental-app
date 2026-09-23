@@ -44,17 +44,24 @@ st.markdown("""
         background-color: #f1f5f9 !important;
     }
 
-    /* 2. ปุ่มดึง Sidebar ออกมา / ปุ่มพับ Sidebar ให้เป็นสีดำเข้ม */
-    [data-testid="collapsedControl"],
+    /* 2. ปุ่มดึง Sidebar ออกมา / ปุ่มพับ Sidebar ให้เป็นพื้นขาว ตัวดึงสีดำ */
+    [data-testid="collapsedControl"] {
+        background-color: #ffffff !important;
+        border-radius: 8px !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15) !important;
+    }
+
     [data-testid="collapsedControl"] button,
     [data-testid="stSidebarCollapseButton"] button {
-        color: #0f172a !important;
         background-color: #ffffff !important;
+        color: #0f172a !important;
         border-radius: 8px !important;
     }
 
     [data-testid="collapsedControl"] svg,
-    [data-testid="stSidebarCollapseButton"] svg {
+    [data-testid="stSidebarCollapseButton"] svg,
+    [data-testid="collapsedControl"] svg *,
+    [data-testid="stSidebarCollapseButton"] svg * {
         color: #0f172a !important;
         fill: #0f172a !important;
         stroke: #0f172a !important;
@@ -248,7 +255,7 @@ st.markdown("""
         background-color: #ffffff !important;
         border-radius: 14px !important;
         border: 1px solid #e2e8f0 !important;
-        border-top: 3px solid #d4af37 !important;
+        border-top: 3.3px solid #d4af37 !important;
         box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
     }
     </style>
@@ -290,7 +297,7 @@ def login_page():
     """, unsafe_allow_html=True)
 
     st.markdown("<br/><br/>", unsafe_allow_html=True)
-    col1, col2, col3 = st.columns([1, 1.8, 1])
+    col1, col2, col3 = st.columns()
     
     with col2:
         st.markdown("""
@@ -884,7 +891,7 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
     st.markdown("<br/>", unsafe_allow_html=True)
 
     # 2. Middle Row
-    col_mid1, col_mid2 = st.columns([1, 1])
+    col_mid1, col_mid2 = st.columns()
 
     with col_mid1:
         st.markdown("""
@@ -955,7 +962,7 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
     st.markdown("<br/>", unsafe_allow_html=True)
 
     # 3. Bottom Row
-    col_bot1, col_bot2 = st.columns([1, 1])
+    col_bot1, col_bot2 = st.columns()
 
     with col_bot1:
         st.markdown("""

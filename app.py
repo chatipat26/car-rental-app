@@ -760,7 +760,7 @@ elif module_choice == "🔧 6. ค่าใช้จ่าย & ซ่อมบ�
             st.info("ยังไม่มีข้อมูลค่าใช้จ่าย")
 
 # ====================================================
-# โมดูล 7: Dashboard & รายงาน (แก้ไข freq='ME' ป้องกัน ValueError)
+# โมดูล 7: Dashboard & รายงาน (มีทั้ง Line Chart และ Donut Chart)
 # ====================================================
 elif module_choice == "📊 7. Dashboard & รายงาน":
     st.title("📊 7. Executive Dashboard & Financial Budget")
@@ -785,50 +785,96 @@ elif module_choice == "📊 7. Dashboard & รายงาน":
 
     st.markdown("<br/>", unsafe_allow_html=True)
 
-    # Consolidated Budget Line Chart (แก้ไขใช้ freq='ME' สำหรับ Pandas 2.2+)
-    st.markdown("""
-        <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-top: 4px solid #d4af37; border-radius: 16px; padding: 20px 25px; box-shadow: 0 4px 25px rgba(15, 23, 42, 0.05); margin-bottom: 25px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <div>
-                    <h3 style="margin: 0; font-size: 20px; color: #0f172a; font-weight: 700;">Consolidated Budget Overview</h3>
-                    <p style="margin: 3px 0 0 0; color: #64748b; font-size: 13px;">
-                        <span style="color: #2563eb; font-weight: 600;">— Revenues</span> &nbsp;&nbsp;&nbsp; 
-                        <span style="color: #ef4444; font-weight: 600;">— Expenditures</span>
-                    </p>
-                </div>
-            </div>
-    """, unsafe_allow_html=True)
+    # แบ่งพื้นที่การ์ดกราฟ 2 คอลัมน์ (60 : 40)
+    col_dash1, col_dash2 = st.columns([1.6, 1])
 
-    # ใช้ freq='ME' ป้องกัน ValueError บน Pandas เวอร์ชันใหม่
-    dates = pd.date_range(end=datetime.now(), periods=12, freq='ME').strftime('%b %Y')
-    rev_trend = [45000, 52000, 48000, 61000, 58000, 72000, 68000, 85000, 79000, 92000, 88000, max(100000.0, total_rev)]
-    exp_trend = [15000, 18000, 12000, 25000, 20000, 31000, 22000, 28000, 24000, 35000, 29000, max(20000.0, total_exp)]
+    with col_dash1:
+        # 1. Consolidated Budget Line Chart
+        st.markdown("""
+            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-top: 4px solid #d4af37; border-radius: 16px; padding: 20px 22px; box-shadow: 0 4px 25px rgba(15, 23, 42, 0.05); margin-bottom: 25px;">
+                <h3 style="margin: 0; font-size: 18px; color: #0f172a; font-weight: 700;">Consolidated Budget Overview</h3>
+                <p style="margin: 3px 0 10px 0; color: #64748b; font-size: 13px;">
+                    <span style="color: #2563eb; font-weight: 600;">— Revenues</span> &nbsp;&nbsp;&nbsp; 
+                    <span style="color: #ef4444; font-weight: 600;">— Expenditures</span>
+                </p>
+        """, unsafe_allow_html=True)
 
-    plt.style.use('default')
-    plt.rcParams['font.sans-serif'] = ['DejaVu Sans', 'Arial', 'sans-serif']
-    
-    fig, ax = plt.subplots(figsize=(10, 3.8))
-    fig.patch.set_facecolor('#ffffff')
-    ax.set_facecolor('#ffffff')
+        dates = pd.date_range(end=datetime.now(), periods=12, freq='ME').strftime('%b %Y')
+        rev_trend = [45000, 52000, 48000, 61000, 58000, 72000, 68000, 85000, 79000, 92000, 88000, max(100000.0, total_rev)]
+        exp_trend = [15000, 18000, 12000, 25000, 20000, 31000, 22000, 28000, 24000, 35000, 29000, max(20000.0, total_exp)]
 
-    ax.plot(dates, rev_trend, color='#2563eb', linewidth=2.5, marker='o', markersize=5, label='Revenues')
-    ax.fill_between(dates, rev_trend, color='#2563eb', alpha=0.08)
+        plt.style.use('default')
+        plt.rcParams['font.sans-serif'] = ['DejaVu Sans', 'Arial', 'sans-serif']
+        
+        fig1, ax1 = plt.subplots(figsize=(7, 3.6))
+        fig1.patch.set_facecolor('#ffffff')
+        ax1.set_facecolor('#ffffff')
 
-    ax.plot(dates, exp_trend, color='#ef4444', linewidth=2.5, marker='o', markersize=5, label='Expenditures')
-    ax.fill_between(dates, exp_trend, color='#ef4444', alpha=0.08)
+        ax1.plot(dates, rev_trend, color='#2563eb', linewidth=2.5, marker='o', markersize=4, label='Revenues')
+        ax1.fill_between(dates, rev_trend, color='#2563eb', alpha=0.08)
 
-    ax.grid(True, linestyle='--', alpha=0.3, color='#cbd5e1')
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
-    ax.spines['left'].set_color('#e2e8f0')
-    ax.spines['bottom'].set_color('#e2e8f0')
+        ax1.plot(dates, exp_trend, color='#ef4444', linewidth=2.5, marker='o', markersize=4, label='Expenditures')
+        ax1.fill_between(dates, exp_trend, color='#ef4444', alpha=0.08)
 
-    ax.tick_params(colors='#64748b', labelsize=9)
-    plt.xticks(rotation=15)
-    plt.tight_layout()
+        ax1.grid(True, linestyle='--', alpha=0.3, color='#cbd5e1')
+        ax1.spines['top'].set_visible(False)
+        ax1.spines['right'].set_visible(False)
+        ax1.spines['left'].set_color('#e2e8f0')
+        ax1.spines['bottom'].set_color('#e2e8f0')
 
-    st.pyplot(fig)
-    st.markdown("</div>", unsafe_allow_html=True)
+        ax1.tick_params(colors='#64748b', labelsize=8)
+        plt.xticks(rotation=25)
+        plt.tight_layout()
+
+        st.pyplot(fig1)
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    with col_dash2:
+        # 2. Car Status Proportion (Donut Chart)
+        st.markdown("""
+            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-top: 4px solid #d4af37; border-radius: 16px; padding: 20px 22px; box-shadow: 0 4px 25px rgba(15, 23, 42, 0.05); margin-bottom: 25px;">
+                <h3 style="margin: 0 0 10px 0; font-size: 18px; color: #0f172a; font-weight: 700;">📌 สัดส่วนสถานะรถยนต์</h3>
+        """, unsafe_allow_html=True)
+
+        status_map_en = {
+            "ว่าง": "Available",
+            "กำลังเช่า": "Rented",
+            "ซ่อมบำรุง": "Maintenance",
+            "ระงับใช้งาน": "Suspended"
+        }
+
+        if cars_data:
+            df_status = pd.DataFrame(cars_data)["status"].value_counts().reset_index()
+            df_status.columns = ["Status", "Count"]
+            df_status["Status_EN"] = df_status["Status"].map(lambda x: status_map_en.get(x, x))
+
+            fig2, ax2 = plt.subplots(figsize=(4.5, 3.6))
+            fig2.patch.set_facecolor('#ffffff')
+            ax2.set_facecolor('#ffffff')
+
+            colors_pie = ['#0f172a', '#1e3a8a', '#2563eb', '#f59e0b', '#94a3b8']
+            
+            # Donut Chart 
+            wedges, texts, autotexts = ax2.pie(
+                df_status["Count"], 
+                labels=df_status["Status_EN"], 
+                autopct="%1.1f%%", 
+                startangle=90, 
+                colors=colors_pie[:len(df_status)],
+                pctdistance=0.75,
+                textprops={'color':"#0f172a", 'fontsize':9, 'weight':'bold'}
+            )
+            
+            # วงกลมสีขาวตรงกลางทำทรง Donut
+            centre_circle = plt.Circle((0,0),0.50,fc='white')
+            ax2.add_artist(centre_circle)
+            ax2.axis("equal")
+            plt.tight_layout()
+            st.pyplot(fig2)
+        else:
+            st.info("ยังไม่มีข้อมูลรถยนต์")
+
+        st.markdown("</div>", unsafe_allow_html=True)
 
 # ====================================================
 # โมดูล 8: ระบบแจ้งเตือน (Alerts System)
